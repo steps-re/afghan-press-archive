@@ -1,0 +1,5 @@
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+numpy==2.2.1
+google-cloud-firestore==2.20.0
+google-auth==2.37.0

@@ -1,0 +1,88 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>3. Modern Afghan — Afghan Press Archive design study</title>
+<style>@font-face{font-family:Amiri;src:url(/fonts/amiri-arabic.woff2) format('woff2');
+ unicode-range:U+0600-06FF,U+0750-077F,U+08A0-08FF,U+FB50-FDFF,U+FE70-FEFC;font-display:swap}
+*{box-sizing:border-box}
+
+ body{background:#fbf7ee;color:#1d1a14;font:17px/1.6 Georgia,serif;margin:0}
+ .wrap{max-width:1060px;margin:0 auto;padding:0 26px}
+ header{text-align:center;padding:44px 0 0;position:relative}
+ .tile{height:64px;background:
+   repeating-conic-gradient(from 45deg,#1f3a6e 0 25%,transparent 0 50%) 0 0/34px 34px,
+   repeating-conic-gradient(from 45deg,#b08d3f 0 25%,transparent 0 50%) 17px 17px/34px 34px;
+   opacity:.28;margin-bottom:26px}
+ .ar{font-family:Amiri,serif;direction:rtl;font-size:52px;margin:0;color:#1f3a6e}
+ .en{font-size:13px;letter-spacing:.24em;text-transform:uppercase;color:#7c3b2e;margin:10px 0 0}
+ .meta{font-size:13px;color:#6f6757;margin-top:8px}
+ .q{width:100%;border:2px solid #1f3a6e;border-radius:2px;background:#fff;padding:15px 18px;
+   font:25px/1.5 Amiri,serif;direction:rtl;text-align:right;margin:34px 0 0}
+ .hit{display:grid;grid-template-columns:96px 1fr;gap:20px;padding:20px 0;border-bottom:1px solid #e3d9c2}
+ .hit img{width:96px;border:3px solid #b08d3f}
+ .ref{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#b08d3f}
+ .txt{font-family:Amiri,serif;direction:rtl;text-align:right;font-size:23px;line-height:2.15;margin-top:8px}
+ footer{margin-top:44px;border-top:3px double #1f3a6e;padding:20px 0 60px;font-size:14px;color:#6f6757}
+ 
+.bar{position:fixed;top:0;left:0;right:0;background:#111;color:#fff;font:12px/1 -apple-system,system-ui,sans-serif;
+ padding:9px 14px;z-index:99;display:flex;gap:14px;align-items:center;letter-spacing:.06em}
+.bar a{color:#fff;text-decoration:none;border-bottom:1px solid #666}
+.bar b{font-weight:600} .bar span{opacity:.65}
+.bar button{background:transparent;border:1px solid #666;color:#fff;font:inherit;font-size:11px;
+ padding:3px 9px;cursor:pointer;border-radius:2px}
+.tools{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.tools .q{flex:1;min-width:240px}
+#mode,.dl{font:inherit;font-size:12px;padding:6px 10px;background:transparent;color:inherit;
+ border:1px solid currentColor;cursor:pointer;text-decoration:none;letter-spacing:.06em}
+.count{font-size:12px;letter-spacing:.12em;text-transform:uppercase;opacity:.65;padding:10px 0}
+.hint{font-size:13px;opacity:.7}
+.hit{cursor:pointer}
+body{padding-top:34px}
+html[dir=rtl] .hit{direction:rtl}
+html[dir=rtl] .cols{direction:rtl}
+</style></head><body>
+<div class="bar"><b>3 / 10 · Modern Afghan</b><span>Lapis, madder and gold — the pigments of Herat illumination — driving a contemporary layout. Geometry from tilework, not from a CSS framework.</span>
+ <span style="flex:1"></span><button id="lang">فارسی</button><a href="/">all ten</a> <a href="/02-swiss.html">← prev</a> <a href="/04-illuminated.html">next →</a></div>
+<div class="wrap">
+<header><div class="tile"></div>
+  <div class="head">
+  <h1 class="ar">آرشیو مطبوعات افغانستان</h1>
+  <p class="en" data-en="Afghan Press Archive" data-fa="آرشیو مطبوعات افغانستان">Afghan Press Archive</p>
+  <p class="meta" data-en="69,624 pages · 579 volumes · Kabul and elsewhere, 1871–1930s" data-fa="۶۹٬۶۲۴ صفحه · ۵۷۹ جلد · کابل و جاهای دیگر، ۱۸۷۱ تا دههٔ ۱۹۳۰">69,624 pages · 579 volumes · Kabul and elsewhere, 1871–1930s</p>
+  </div>
+</header>
+
+<div class="tools">
+  <input class="q" value="ترقیات مدنیه" placeholder="جستجو…">
+  <select id="mode">
+    <option value="trigram">words &amp; phrases</option>
+    <option value="semantic">subject</option>
+    <option value="hybrid">both</option>
+  </select>
+  <a class="dl" href="https://afghanpress.org/api/download/corpus.jsonl">download corpus</a>
+</div>
+<div class="hits">
+<div class="hit"><img loading="lazy" src="https://storage.googleapis.com/adl-page-images/adl0616/00575.jpg" alt=""><div><span class="ref">adl0616 · page 575</span><div class="txt">سال دوم شماره ۱۳ و احوال سابقه ولاحقه آن جلب نموده برين مسئله نظر اندازيم كه ترقیات مدنيه آيا در وطن عزيز ما از كدام وقت پرتونگار ظهور گرديده است ؟ : </div></div></div>
+<div class="hit"><img loading="lazy" src="https://storage.googleapis.com/adl-page-images/adl0616/00144.jpg" alt=""><div><span class="ref">adl0616 · page 144</span><div class="txt">نمره ۱۲ سال یکم نگران ايشيك آقاسی ملکی حضور اعلیحضرت همایون قیمت سالیانه در اطراف داخل مملکت با اخراج داک ۱۴ روپیه خارج مملکت با اخراج داک نیم پوند ان</div></div></div>
+<div class="hit"><img loading="lazy" src="https://storage.googleapis.com/adl-page-images/adl0242/00045.jpg" alt=""><div><span class="ref">adl0242 · page 45</span><div class="txt">۴۴ شریک می‌شدند و ازین بود که هنوز یک عصر نگذشته بود اکثر آسیا و یک قسمی از اوروپا و افریقا بنور نیر درخشان اسلامی منور و تابان گردیده مردم نصاراً بجز</div></div></div>
+</div>
+
+<footer data-en="Scans by New York University Libraries · text machine-read, unverified" data-fa="تصاویر از کتابخانه‌های دانشگاه نیویورک · متن ماشین‌خوان و تأییدنشده">Scans by New York University Libraries · text machine-read, unverified</footer>
+</div>
+<script src="/app.js"></script>
+<script>
+var L=localStorage.getItem('adl_lang')||'en';
+function apply(){
+  var fa=L==='fa';
+  document.documentElement.dir=fa?'rtl':'ltr';
+  document.documentElement.lang=fa?'fa':'en';
+  document.querySelectorAll('[data-en]').forEach(function(el){
+    el.textContent = fa ? el.dataset.fa : el.dataset.en;
+  });
+  document.getElementById('lang').textContent = fa ? 'English' : 'فارسی';
+}
+document.getElementById('lang').onclick=function(){
+  L = L==='fa' ? 'en' : 'fa'; localStorage.setItem('adl_lang',L); apply();
+};
+apply();
+</script>
+</body></html>

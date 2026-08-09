@@ -1,0 +1,19 @@
+__pycache__/
+*.pyc
+.env
+*.key
+.aoai_key
+/work/
+/data/
+*.pdf
+*.jpg
+*.jpeg
+*.png
+*_results.json
+work/gold_sources/
+
+# generated search index — rebuilt from GCS, never committed (any depth, not just root)
+data/
+reader/data/
+*.npy
+*.db

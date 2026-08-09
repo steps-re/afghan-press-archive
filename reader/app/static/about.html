@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Method, accuracy and limits — Afghan Press Archive</title>
+<link rel="stylesheet" href="/about.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="masthead">
+    <p class="en-title"><a href="/">Afghan Press Archive</a></p>
+    <nav class="subnav"><a href="/">Search</a> · <a href="/history.html">History</a> ·
+      <a href="/about.html">Method</a> · <a href="#data">Data</a></nav>
+    <div class="rules"></div>
+  </header>
+
+  <article>
+    <h1>Method, accuracy and limits</h1>
+    <p class="lede">This page exists so that you can judge how far to trust the text. Nothing
+    here is hidden, and the numbers are measurements rather than estimates.</p>
+
+    <h2>What this is</h2>
+    <p>Every page of the Afghanistan Digital Library — 69,624 pages across 579 volumes of books
+    and periodicals printed in Afghanistan between roughly 1871 and the 1930s — has been read by
+    a machine and indexed for search. Until now the collection was searchable only by title.
+    The scans and the collection are the work of
+    <a href="https://afghanistandl.nyu.edu/" target="_blank" rel="noopener">New York University
+    Libraries</a>; the transcription is not.</p>
+
+    <h2>How the text was made</h2>
+    <p>Each page was rendered at 300 dpi and read once by a vision-language model
+    (<span class="mono">gemini-3.1-pro</span>), prompted to preserve the original orthography, to
+    keep the reading order of multi-column pages, and to mark unclear words rather than guess
+    silently. No hand correction has been applied. The whole collection was read for about
+    <span class="mono">$290</span> of donated cloud credit.</p>
+    <p>Several plausible refinements were tested against ground truth and <em>rejected because
+    they did not help</em>: cropping pages into detected regions before reading, a second
+    fine-tuned reader, and an ensemble that reconciled two independent readings. Each is
+    documented below.</p>
+
+    <h2>How accurate it is</h2>
+    <p>Accuracy was measured two ways, and the difference between them matters.</p>
+    <p><strong>Against a modern printed edition</strong> of the same articles, the character
+    error rate is about 32%. That number is misleading on its own: a modern editor normalises
+    spelling, adds punctuation and regularises archaic forms, so much of that 32% is the distance
+    between a 1911 lithograph and a 2008 reprint, not a misreading.</p>
+    <p><strong>Against passages transcribed by a scholar directly from the page</strong>, the
+    character error rate is about <strong>7%</strong> — roughly 93 characters correct in 100.
+    That is the honest figure for reading error. It rests on three passages, so treat it as an
+    indication rather than a settled result.</p>
+    <p>Put plainly: <strong>the text is good enough to find a page and to read what it is
+    about. It is not good enough to quote.</strong> Read the image.</p>
+
+    <h2>How well search works</h2>
+    <p>Search was measured the way it is actually used: take a phrase from a printed edition —
+    clean, modern spelling — and see whether the corresponding page comes back.</p>
+    <table>
+      <tr><th>Query</th><th>Correct page in top 20</th><th>Ranked first</th></tr>
+      <tr><td>A sentence (about 40 words)</td><td>81%</td><td>57%</td></tr>
+      <tr><td>A short phrase (about 12 words)</td><td>60%</td><td>21%</td></tr>
+    </table>
+    <p>Searching by <em>subject</em> — matching meaning rather than wording — was measured too,
+    and is markedly worse at this particular job: 55% for a sentence, 24% for a short phrase.
+    That is expected. Finding the page that contains a known sentence is a matching problem, and
+    compressing a whole page to a single vector discards the exact wording that identifies it.
+    Subject search is offered anyway, because it is the only way to browse a theme rather than
+    chase a quotation, and no measurement here speaks to how well it does <em>that</em>.</p>
+    <p>So a remembered sentence usually finds its page; three or four words often will not. The
+    index is built on character trigrams rather than whole words, which is what allows a
+    misread word to still match, and both the text and your query are normalised for the
+    orthographic variation that otherwise defeats Perso-Arabic search — <span class="ar">ی/ي</span>,
+    <span class="ar">ک/ك</span>, tatweel, vowel marks and digit forms.</p>
+
+    <h2>What is certainly wrong with it</h2>
+    <ul>
+      <li><strong>Reading order on dense multi-column pages</strong> is unverified. Text may be
+      stitched together across columns in the wrong sequence.</li>
+      <li><strong>72 pages returned nothing at all</strong> and are blank in the index.</li>
+      <li><strong>Nobody has checked any of this by hand.</strong> The accuracy figure comes from
+      three passages of one newspaper.</li>
+      <li><strong>Dates, issue numbers and titles are not yet extracted</strong>, so you cannot
+      filter by year. Volume identifiers are NYU's.</li>
+      <li>The measurement above comes from one paper (Anis, 1947–50) and one period. Older
+      lithographs are harder and are probably read less well.</li>
+    </ul>
+
+    <h2>Corrections</h2>
+    <p>Every page accepts a suggested reading. Suggestions are reviewed before they appear, and
+    are credited to whoever made them. The machine transcription is never overwritten — a
+    correction sits beside it, so the record of what the machine read stays intact.</p>
+    <p>Private notes are exactly that: stored against your account, shown to nobody else, and
+    never reviewed by us.</p>
+
+    <h2>Rights</h2>
+    <p>NYU states that the works are in the public domain and that the images "may be freely
+    reproduced, distributed and transmitted by anyone for any purpose, commercial or
+    non-commercial." The transcription produced here is released on the same terms. Please
+    credit New York University Libraries for the scans.</p>
+
+
+    <h2 id="work">What was actually done</h2>
+    <p>In sequence, and with the cost of each, because the numbers are the interesting part:</p>
+    <ol>
+      <li><strong>Read the collection.</strong> All 579 volumes fetched from NYU, rendered at
+      300 dpi, and read page by page by a vision-language model.
+      <span class="mono">67,909</span> pages in the batch run plus a previously-transcribed
+      volume, for <span class="mono">$288</span> of donated cloud credit.</li>
+      <li><strong>Built ground truth without hand transcription.</strong> A modern printed
+      edition of Tarzi's collected articles was re-read, normalised, and aligned to the original
+      lithograph pages, with a model adjudicating each candidate pair. That produced
+      <strong>102 verified image-to-text pairs</strong> — the first aligned gold set for
+      lithographed Kabul nasta'liq, built for the cost of the compute.</li>
+      <li><strong>Measured everything against it.</strong> Four readers, two thinking levels,
+      whole-page versus region-cropped, single-pass versus ensemble, and text-only linguistic
+      correction at three levels of aggression.</li>
+      <li><strong>Rejected most of it.</strong> Cropping pages into detected regions: no gain.
+      A second fine-tuned reader: no gain. Ensemble adjudication: a real but tiny gain that cost
+      more than the read itself. Post-hoc "AI cleanup": improved the score while rewriting 3–5%
+      of already-correct text, which for a primary source is damage, not improvement.</li>
+      <li><strong>Cut the cost 31×.</strong> Turning the model's reasoning budget down and
+      switching to batch inference took the full-collection read from a projected
+      <span class="mono">$9,030</span> to <span class="mono">$288</span>, with no measurable loss
+      of accuracy.</li>
+      <li><strong>Indexed and published.</strong> A character-trigram index over normalised text,
+      embeddings for subject search, page images, and this site.</li>
+    </ol>
+    <p>The through-line: nearly every intervention that sounded like it should help did not, and
+    the ones that mattered were found by measuring rather than by reasoning about it.</p>
+
+    <h2 id="next">What should happen next</h2>
+    <ul>
+      <li><strong>Extract issue metadata.</strong> Dates, issue numbers and titles are printed on
+      the pages but not yet pulled out. Doing so would allow filtering by year and paper, which is
+      the single most-requested thing a periodicals archive can offer.</li>
+      <li><strong>More human ground truth.</strong> The 7% accuracy figure rests on three
+      passages of one newspaper from the 1940s. Passages from the 1911–18 lithographs would tell
+      us whether the older, harder printing reads as well.</li>
+      <li><strong>Verify reading order on multi-column pages.</strong> Currently unmeasured, and
+      the most likely place for silent errors.</li>
+      <li><strong>Release the gold set.</strong> The 102 aligned pairs are useful to anyone
+      working on Perso-Arabic OCR, and the alignment method transfers to any corpus with a modern
+      reprint.</li>
+      <li><strong>Corrections at scale.</strong> Every suggested reading makes the next
+      measurement better. Enough of them would allow a properly supervised model.</li>
+    </ul>
+
+    <h2 id="data">Taking the data, and the code</h2>
+    <p>The full corpus is one JSON Lines record per page — volume, page number, text — from
+    <a href="/api/download/corpus.jsonl">a single link</a>, or a single volume from its page in
+    the reader. No account, no rate limit, no attribution requirement beyond crediting NYU for
+    the scans.</p>
+    <p>The pipeline behind all of this — fetching, rendering, reading, the alignment that built
+    the ground truth, every benchmark harness, and this site — is a single repository. It is not
+    public yet, but it is <strong>shared on request, to anyone, for any purpose</strong>.</p>
+    <div class="ask">
+      <h3>Ask for the code</h3>
+      <p>Useful if you want to check how a number on this page was produced, run the readers
+      against your own pages, or reuse the alignment method — taking a modern reprint of a text
+      and using it to generate ground truth for the original, without transcribing by hand. That
+      technique transfers to any corpus in the same position, and it is the part most likely to
+      be worth someone else's time.</p>
+      <p class="askline">
+        <a href="mailto:mike@stepsventures.com?subject=Afghan%20Press%20Archive%20%E2%80%94%20code%20request&amp;body=Hello%2C%0A%0AI%27d%20like%20access%20to%20the%20Afghan%20Press%20Archive%20repository.%0A%0AWho%20I%20am%3A%0AWhat%20I%27d%20use%20it%20for%3A%0A%0AThanks%2C">Request access →</a>
+      </p>
+      <p class="small">Same for the <strong>102-pair gold set</strong>: aligned page images and
+      verified text for lithographed nasta&#39;liq, which as far as we know does not otherwise
+      exist. Ask and it is yours.</p>
+    </div>
+
+    <h2 id="cite">Citing it</h2>
+    <p class="cite">Afghanistan Digital Library, <span class="mono">adl0616</span>, p. 575.
+    Digitised by New York University Libraries. Transcription machine-generated and unverified,
+    retrieved <span class="mono">YYYY-MM-DD</span>.</p>
+    <p>If a passage matters to your argument, cite the image and transcribe it yourself.</p>
+    <p>To cite the project as a whole:</p>
+    <p class="cite">German, M. <em>Afghan Press Archive: a searchable transcription of the
+    Afghanistan Digital Library</em>. Steps Ventures, 2026. afghanpress.org</p>
+
+
+    <p class="foot"><a href="/">← back to search</a> · <a href="/history.html">the history behind these papers →</a></p>
+  </article>
+</div>
+</body>
+</html>

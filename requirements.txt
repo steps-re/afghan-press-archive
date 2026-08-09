@@ -1,0 +1,9 @@
+# core (all layers except the optional dedicated layout model)
+pypdfium2
+pillow
+rapidfuzz
+
+# optional: dedicated layout model for stable region detection (htr/layout_surya.py).
+# Heavy (torch + a llama.cpp backend); intended to run on a the credit grant VM, not the laptop.
+#   pip install surya-ocr
+#   macOS: brew install llama.cpp   |   Linux VM: brew/build llama.cpp or set LLAMA_CPP_BINARY

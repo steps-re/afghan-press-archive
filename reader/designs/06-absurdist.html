@@ -1,0 +1,88 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>6. Absurdist — Afghan Press Archive design study</title>
+<style>@font-face{font-family:Amiri;src:url(/fonts/amiri-arabic.woff2) format('woff2');
+ unicode-range:U+0600-06FF,U+0750-077F,U+08A0-08FF,U+FB50-FDFF,U+FE70-FEFC;font-display:swap}
+*{box-sizing:border-box}
+
+ body{background:#f2e600;color:#12005e;font:18px/1.4 'Arial Black',Impact,sans-serif;margin:0;overflow-x:hidden}
+ .wrap{max-width:1100px;margin:0 auto;padding:0 20px}
+ header{padding:30px 0 0}
+ .ar{font-family:Amiri,serif;direction:rtl;font-size:96px;line-height:.95;margin:0;
+   color:#ff2d95;text-shadow:6px 6px 0 #12005e;transform:rotate(-2deg)}
+ .en{font-size:26px;text-transform:uppercase;letter-spacing:-.02em;margin:14px 0 0;
+   background:#12005e;color:#f2e600;display:inline-block;padding:4px 12px;transform:rotate(1deg)}
+ .meta{font-size:15px;margin-top:14px;background:#fff;display:inline-block;padding:5px 10px}
+ .q{width:100%;border:8px solid #12005e;background:#fff;padding:18px;
+   font:34px/1.3 Amiri,serif;direction:rtl;text-align:right;margin:26px 0;transform:rotate(-.6deg)}
+ .hit{display:grid;grid-template-columns:130px 1fr;gap:18px;background:#fff;border:6px solid #12005e;
+   padding:16px;margin-bottom:20px}
+ .hit:nth-child(even){transform:rotate(.7deg);background:#ff2d95;color:#fff}
+ .hit img{width:130px;border:5px solid #12005e}
+ .ref{font-size:13px;text-transform:uppercase;background:#12005e;color:#f2e600;padding:3px 8px;display:inline-block}
+ .txt{font-family:Amiri,serif;direction:rtl;text-align:right;font-size:26px;line-height:1.85;margin-top:10px}
+ footer{background:#12005e;color:#f2e600;padding:18px;margin:20px 0 60px;font-size:14px;text-transform:uppercase}
+ 
+.bar{position:fixed;top:0;left:0;right:0;background:#111;color:#fff;font:12px/1 -apple-system,system-ui,sans-serif;
+ padding:9px 14px;z-index:99;display:flex;gap:14px;align-items:center;letter-spacing:.06em}
+.bar a{color:#fff;text-decoration:none;border-bottom:1px solid #666}
+.bar b{font-weight:600} .bar span{opacity:.65}
+.bar button{background:transparent;border:1px solid #666;color:#fff;font:inherit;font-size:11px;
+ padding:3px 9px;cursor:pointer;border-radius:2px}
+.tools{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.tools .q{flex:1;min-width:240px}
+#mode,.dl{font:inherit;font-size:12px;padding:6px 10px;background:transparent;color:inherit;
+ border:1px solid currentColor;cursor:pointer;text-decoration:none;letter-spacing:.06em}
+.count{font-size:12px;letter-spacing:.12em;text-transform:uppercase;opacity:.65;padding:10px 0}
+.hint{font-size:13px;opacity:.7}
+.hit{cursor:pointer}
+body{padding-top:34px}
+html[dir=rtl] .hit{direction:rtl}
+html[dir=rtl] .cols{direction:rtl}
+</style></head><body>
+<div class="bar"><b>6 / 10 · Absurdist</b><span>Type as event. Scale collisions, a colour that should not work, the archive shouting instead of whispering. Included because you asked how far it goes.</span>
+ <span style="flex:1"></span><button id="lang">فارسی</button><a href="/">all ten</a> <a href="/05-broadsheet.html">← prev</a> <a href="/07-terminal.html">next →</a></div>
+<div class="wrap">
+<header>
+  <div class="head">
+  <h1 class="ar">آرشیو مطبوعات افغانستان</h1>
+  <p class="en" data-en="Afghan Press Archive" data-fa="آرشیو مطبوعات افغانستان">Afghan Press Archive</p>
+  <p class="meta" data-en="69,624 pages · 579 volumes · Kabul and elsewhere, 1871–1930s" data-fa="۶۹٬۶۲۴ صفحه · ۵۷۹ جلد · کابل و جاهای دیگر، ۱۸۷۱ تا دههٔ ۱۹۳۰">69,624 pages · 579 volumes · Kabul and elsewhere, 1871–1930s</p>
+  </div>
+</header>
+
+<div class="tools">
+  <input class="q" value="ترقیات مدنیه" placeholder="جستجو…">
+  <select id="mode">
+    <option value="trigram">words &amp; phrases</option>
+    <option value="semantic">subject</option>
+    <option value="hybrid">both</option>
+  </select>
+  <a class="dl" href="https://afghanpress.org/api/download/corpus.jsonl">download corpus</a>
+</div>
+<div class="hits">
+<div class="hit"><img loading="lazy" src="https://storage.googleapis.com/adl-page-images/adl0616/00575.jpg" alt=""><div><span class="ref">adl0616 · page 575</span><div class="txt">سال دوم شماره ۱۳ و احوال سابقه ولاحقه آن جلب نموده برين مسئله نظر اندازيم كه ترقیات مدنيه آيا در وطن عزيز ما از كدام وقت پرتونگار ظهور گرديده است ؟ : </div></div></div>
+<div class="hit"><img loading="lazy" src="https://storage.googleapis.com/adl-page-images/adl0616/00144.jpg" alt=""><div><span class="ref">adl0616 · page 144</span><div class="txt">نمره ۱۲ سال یکم نگران ايشيك آقاسی ملکی حضور اعلیحضرت همایون قیمت سالیانه در اطراف داخل مملکت با اخراج داک ۱۴ روپیه خارج مملکت با اخراج داک نیم پوند ان</div></div></div>
+<div class="hit"><img loading="lazy" src="https://storage.googleapis.com/adl-page-images/adl0242/00045.jpg" alt=""><div><span class="ref">adl0242 · page 45</span><div class="txt">۴۴ شریک می‌شدند و ازین بود که هنوز یک عصر نگذشته بود اکثر آسیا و یک قسمی از اوروپا و افریقا بنور نیر درخشان اسلامی منور و تابان گردیده مردم نصاراً بجز</div></div></div>
+</div>
+
+<footer data-en="Scans by New York University Libraries · text machine-read, unverified" data-fa="تصاویر از کتابخانه‌های دانشگاه نیویورک · متن ماشین‌خوان و تأییدنشده">Scans by New York University Libraries · text machine-read, unverified</footer>
+</div>
+<script src="/app.js"></script>
+<script>
+var L=localStorage.getItem('adl_lang')||'en';
+function apply(){
+  var fa=L==='fa';
+  document.documentElement.dir=fa?'rtl':'ltr';
+  document.documentElement.lang=fa?'fa':'en';
+  document.querySelectorAll('[data-en]').forEach(function(el){
+    el.textContent = fa ? el.dataset.fa : el.dataset.en;
+  });
+  document.getElementById('lang').textContent = fa ? 'English' : 'فارسی';
+}
+document.getElementById('lang').onclick=function(){
+  L = L==='fa' ? 'en' : 'fa'; localStorage.setItem('adl_lang',L); apply();
+};
+apply();
+</script>
+</body></html>

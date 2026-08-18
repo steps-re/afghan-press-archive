@@ -17,3 +17,6 @@ data/
 reader/data/
 *.npy
 *.db
+reader/dist/
+reader/.venv/
+reader/data/_geonames_cache.json

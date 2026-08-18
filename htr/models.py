@@ -120,9 +120,9 @@ def call_openai(deployment, system, user, image_b64=None, max_tokens=16384, retr
 # Each backend: (vendor, model_id). transcribe(name, ...) routes to the right vendor.
 BACKENDS = {
     "gemini-2.5-pro":        ("gemini", "gemini-2.5-pro"),
-    "gemini-2.5-flash":      ("gemini", "gemini-2.5-flash"),
+    "gemini-3.7-flash":      ("gemini", "gemini-3.7-flash"),
     "gemini-3.1-pro":        ("gemini", "gemini-3.1-pro-preview"),
-    "gemini-3.6-flash":      ("gemini", "gemini-3.6-flash"),
+    "gemini-3.7-flash":      ("gemini", "gemini-3.7-flash"),
     "gpt-5.6-sol":           ("openai", "gpt-5.6-sol"),
     "gpt-5.6-terra":         ("openai", "gpt-5.6-terra"),
     # Our supervised tune of 2.5-pro (htr-afghan-pro-v1, epoch-6 checkpoint). Matches

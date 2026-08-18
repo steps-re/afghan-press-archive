@@ -3,7 +3,7 @@
 **[afghanpress.org](https://afghanpress.org)** — every page of the Afghanistan Digital Library,
 read by machine and made searchable for the first time.
 
-**69,624 pages · 579 volumes · Kabul and elsewhere, 1871–1930s · Persian, Dari, Pashto**
+**69,624 pages · 580 volumes · Kabul and elsewhere, 1873–1960s · Persian, Dari, Pashto**
 
 The scans belong to [New York University Libraries](https://afghanistandl.nyu.edu/) and are in
 the public domain. The transcription, the index, the reader and the measurements are this
@@ -41,8 +41,8 @@ modern reprint. Both the code and the gold set are yours on request.
 
 | | |
 |---|---|
-| Reading accuracy vs **human** transcription | **~93% of characters** (n=3) |
-| Reading accuracy vs a modern printed **edition** | ~68% — most of the gap is editorial recension, not misreading |
+| Reading accuracy vs a modern printed **edition**, representative sample | **0.36 median CER** (n=102) — ~0.19 of that is editorial recension, not misreading |
+| Reading accuracy vs **human** transcription | ~93% of characters, but **n=3 passages of a 1940s newspaper** — easier printing than most of the corpus. An indication, not a measurement |
 | Search: right page in top 20, long quote | **81%** |
 | Search: right page in top 20, short phrase | **60%** |
 | Cost to read the entire collection | **~$288** |

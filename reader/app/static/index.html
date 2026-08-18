@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Afghan Press Archive — search 579 volumes of Afghan periodicals, 1871–1930s</title>
+<title>Afghan Press Archive — search 580 volumes of Afghan periodicals, 1873–1960s</title>
 <meta name="description" content="Full-text search across 69,624 pages of Afghan periodicals and books digitised by New York University. Machine-read transcription with page images.">
 <style>
 /* Amiri: a revival of the Bulaq/Amiria naskh — the type tradition these presses worked in.
@@ -12,141 +12,168 @@
   unicode-range:U+0600-06FF,U+0750-077F,U+08A0-08FF,U+200C-200E,U+FB50-FDFF,U+FE70-FEFC;font-display:swap}
 @font-face{font-family:Amiri;font-weight:700;src:url(/fonts/amiri-arabic-700.woff2) format('woff2');
   unicode-range:U+0600-06FF,U+0750-077F,U+08A0-08FF,U+FB50-FDFF,U+FE70-FEFC;font-display:swap}
-@font-face{font-family:AmiriLatin;src:url(/fonts/amiri-latin.woff2) format('woff2');font-display:swap}
 
+/* SYNTHESIS — the four studies that worked share a spine: geometric structure with colour used
+   as structure rather than decoration. Swiss and constructivist discipline in the grid and the
+   rule weights; lapis, gold and madder from Herat illumination carrying the meaning. The two
+   traditions are contemporaries of these newspapers and both build from modular geometry. */
 :root{
-  --paper:#faf6ec; --ink:#23201a; --soft:#6f6757; --rule:#ddd4be;
-  --accent:#7c3b2e;   /* madder */ --lapis:#1f3a6e; --gold:#b08d3f;
-  --sel:rgba(124,59,46,.14);
-  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+  --paper:#faf5e8; --ink:#221d14; --soft:#6f6757; --rule:#ddd4be;
+  --lapis:#1f3a6e; --gold:#b08d3f; --madder:#7c3b2e; --accent:#7c3b2e;
+  --sel:rgba(31,58,110,.12);
+  --sans:"Helvetica Neue",Helvetica,Arial,sans-serif;
   --arabic:Amiri,"Noto Naskh Arabic","Scheherazade New",serif;
+  color-scheme:light;
 }
-/* Deliberately light in every context. A paper archive should look like paper; a black
-   screen makes 1911 lithographs read like a terminal. */
-:root{color-scheme:light}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--paper);color:var(--ink);font:19px/1.65 var(--serif);
-  font-variant-numeric:oldstyle-nums}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.62 var(--sans)}
 ::selection{background:var(--sel)}
 a{color:inherit;text-decoration:none;border-bottom:1px solid var(--rule)}
-a:hover{border-bottom-color:var(--accent)}
-.wrap{max-width:1060px;margin:0 auto;padding:0 26px}
+a:hover{border-bottom-color:var(--madder)}
+/* Every interactive control needs a visible focus ring. The default ring is invisible against
+   this paper background on several browsers, so it is set explicitly rather than left to luck. */
+a:focus-visible,button:focus-visible,input:focus-visible,[tabindex]:focus-visible{
+  outline:3px solid var(--madder);outline-offset:2px}
+.visually-hidden{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
+  clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.skiplink{position:absolute;left:-9999px;background:var(--paper);padding:10px 14px;z-index:99;
+  border:1px solid var(--lapis)}
+.skiplink:focus{left:10px;top:10px;position:fixed}
+.wrap{max-width:1060px;margin:0 auto;padding:0 30px}
 
-/* masthead — newspaper double rule, not a nav bar */
-.masthead{padding:38px 0 0;text-align:center}
-.ar-title{font-family:var(--arabic);direction:rtl;font-size:48px;line-height:1.35;margin:0 0 6px}
-.en-title{font-family:var(--serif);font-size:14.5px;letter-spacing:.22em;text-transform:uppercase;
-  color:var(--soft);margin:0}
-.credit{font-size:11.5px;color:var(--soft);margin:7px 0 0;letter-spacing:.04em}
-.sarlawh{display:block;width:min(720px,92%);height:auto;margin:20px auto 4px}
-.rules{border-top:2px solid var(--ink);border-bottom:1px solid var(--ink);height:4px;margin:22px 0 0}
-.extent{display:flex;gap:22px;justify-content:center;flex-wrap:wrap;padding:12px 0;
-  font-size:13.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);
+/* khatam — the interlaced geometry of Persianate tilework, as a headpiece band */
+.khatam{height:22px;margin:0 -30px;background:
+  repeating-conic-gradient(from 45deg,var(--madder) 0 25%,transparent 0 50%) 0 0/22px 22px,
+  repeating-conic-gradient(from 45deg,var(--gold) 0 25%,transparent 0 50%) 11px 11px/22px 22px;
+  opacity:.42}
+.masthead{text-align:center;padding:30px 0 0}
+.ar-title{font-family:var(--arabic);direction:rtl;font-size:52px;line-height:1.22;margin:0;
+  color:var(--lapis);font-weight:400}
+.en-title{font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--madder);
+  margin:14px 0 0;font-weight:700}
+.credit{font-size:12.5px;color:var(--soft);margin:9px 0 0}
+.langpick{margin:16px 0 0;font-size:14px;color:var(--soft)}
+.langpick button{background:transparent;border:0;color:var(--soft);font:inherit;font-size:14px;
+  cursor:pointer;padding:2px 9px;border-bottom:2px solid transparent}
+.langpick button:hover{color:var(--madder)}
+.langpick button[aria-current=true]{color:var(--lapis);border-bottom-color:var(--gold)}
+#lang-fa{font-family:var(--arabic);font-size:18px}
+.subnav{margin:14px 0 0;font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--soft)}
+.subnav a{border:0;padding:0 4px}
+.subnav a:hover{color:var(--lapis)}
+/* constructivist rule weights: heavy, then hairline */
+.rules{border-top:6px solid var(--lapis);border-bottom:1px solid var(--gold);height:5px;margin:24px 0 0}
+.extent{display:flex;gap:26px;justify-content:center;flex-wrap:wrap;padding:13px 0;
+  font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--soft);
   border-bottom:1px solid var(--rule)}
 
-/* search — a catalogue slip, not a product hero */
-.search{padding:34px 0 8px}
-.field{display:flex;align-items:baseline;gap:14px;border-bottom:1.5px solid var(--ink);padding-bottom:9px}
-.field label{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--soft);white-space:nowrap}
-#q{flex:1;border:0;background:transparent;color:inherit;font:24px/1.5 var(--arabic);
+/* search — a ruled slip, gold underline, nothing decorative */
+.search{padding:34px 0 6px}
+.field{display:flex;align-items:baseline;gap:16px;border-bottom:3px solid var(--gold);padding-bottom:10px}
+.field label{font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--lapis);
+  white-space:nowrap;font-weight:700}
+#q{flex:1;border:0;background:transparent;color:inherit;font:26px/1.5 var(--arabic);
   padding:4px 0;direction:rtl;text-align:right;outline:none}
-#q::placeholder{color:var(--soft);opacity:.75}
-.controls{display:flex;gap:20px;align-items:center;flex-wrap:wrap;margin-top:11px;
-  font-size:13px;color:var(--soft)}
+#q::placeholder{color:var(--soft);opacity:.7}
+.controls{display:flex;gap:20px;align-items:center;flex-wrap:wrap;margin-top:13px;
+  font-size:13.5px;color:var(--soft)}
 .controls label{cursor:pointer}
-input[type=radio]{accent-color:var(--accent);margin-right:5px}
-.langpick{margin:14px 0 0;font-size:14px;color:var(--soft)}
-.langpick button{background:transparent;border:0;color:var(--soft);font:inherit;font-size:14px;
-  cursor:pointer;padding:2px 8px;border-bottom:2px solid transparent}
-.langpick button:hover{color:var(--accent)}
-.langpick button[aria-current=true]{color:var(--ink);border-bottom-color:var(--accent)}
-#lang-fa{font-family:var(--arabic);font-size:17px}
-.subnav{margin:14px 0 0;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--soft)}
-.subnav a{border:0}
-.subnav a:hover{color:var(--accent)}
-/* Farsi interface: mirror the whole layout, not just the words. */
-html[dir=rtl] .controls,html[dir=rtl] .field{flex-direction:row-reverse}
-html[dir=rtl] .hit{grid-template-columns:1fr 64px}
-html[dir=rtl] .hit img{order:2}
-html[dir=rtl] .firstissue{grid-template-columns:1fr 150px}
-html[dir=rtl] .firstissue img{order:2}
-html[dir=rtl] body{font-family:var(--arabic)}
-html[dir=rtl] .en-title,html[dir=rtl] .ref,html[dir=rtl] .count,html[dir=rtl] footer h5,
-html[dir=rtl] .extent{letter-spacing:0}
-html[dir=rtl] .reader{direction:rtl}
-html[dir=rtl] .col.plate{order:0;border-left:0;border-right:1px solid var(--rule)}
-.note{font-size:15px;color:var(--soft);margin:26px 0 0;max-width:62ch}
+input[type=radio]{accent-color:var(--lapis);margin-right:5px}
+#signin{border:0;background:transparent;color:var(--soft);font:inherit;font-size:13.5px;
+  cursor:pointer;text-decoration:underline}
+.note{font-size:15px;color:var(--soft);margin:26px 0 0;max-width:64ch}
 
-/* results — a dense finding list */
-#results{margin-top:30px}
-.count{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--soft);
-  padding-bottom:9px;border-bottom:1px solid var(--rule)}
-.hit{display:grid;grid-template-columns:64px 1fr;gap:18px;padding:17px 0;
+/* results */
+#results{margin-top:28px}
+.count{font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--lapis);
+  padding-bottom:10px;border-bottom:2px solid var(--lapis);font-weight:700}
+.hit{display:grid;grid-template-columns:104px 1fr;gap:24px;padding:22px 0;
   border-bottom:1px solid var(--rule);cursor:pointer;align-items:start}
 .hit:hover{background:var(--sel)}
-.hit img{width:64px;height:86px;object-fit:cover;background:#fff;border:1px solid var(--rule)}
-.ref{font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--soft);margin-bottom:7px}
-.ar{font-family:var(--arabic);direction:rtl;text-align:right;font-size:22px;line-height:2.15}
-mark{background:var(--sel);color:inherit;padding:0 .1em}
+.hit img{width:104px;height:auto;object-fit:cover;background:#fff;border-left:6px solid var(--gold)}
+.ref{font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;
+  background:var(--ink);color:var(--paper);padding:2px 8px;display:inline-block}
+.ar{font-family:var(--arabic);direction:rtl;text-align:right;font-size:23px;line-height:2.15;margin-top:10px}
+
+/* first issue plate */
+.firstissue{display:grid;grid-template-columns:158px 1fr;gap:28px;align-items:start;
+  margin:38px 0 0;padding:26px 0 0;border-top:6px solid var(--lapis)}
+.firstissue img{width:158px;border:3px solid var(--gold);background:#fff;display:block}
+.firstissue h3{font-family:var(--arabic);direction:rtl;font-size:33px;margin:0 0 12px;
+  font-weight:400;color:var(--lapis)}
+.firstissue p{margin:0 0 9px;max-width:58ch;font-size:16px}
+.firstissue .small{font-size:13.5px;color:var(--soft)}
 
 /* reader — image on the RIGHT, text on the LEFT, mirroring the reading direction */
-dialog{padding:0;border:1px solid var(--ink);background:var(--paper);color:var(--ink);
-  width:min(1180px,95vw);max-height:94vh;box-shadow:none}
-dialog::backdrop{background:rgba(20,18,14,.72)}
+dialog{padding:0;border:3px solid var(--lapis);background:var(--paper);color:var(--ink);
+  width:min(1180px,95vw);max-height:94vh}
+dialog::backdrop{background:rgba(31,58,110,.55)}
 .reader{display:grid;grid-template-columns:1fr 1.05fr;max-height:94vh}
-.col{overflow:auto;padding:22px 24px}
+.col{overflow:auto;padding:22px 26px}
 .col.plate{order:2;border-left:1px solid var(--rule);background:#fff;padding:0}
 .col.plate img{width:100%;display:block}
 .rhead{display:flex;justify-content:space-between;align-items:baseline;gap:12px;
-  border-bottom:1px solid var(--ink);padding-bottom:9px;margin-bottom:16px}
-.rref{font-size:12px;letter-spacing:.12em;text-transform:uppercase}
+  border-bottom:3px solid var(--lapis);padding-bottom:10px;margin-bottom:18px}
+.rref{font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--lapis)}
 .nav button{border:0;background:transparent;color:var(--soft);font:inherit;font-size:13px;
-  cursor:pointer;padding:2px 6px}
-.nav button:hover{color:var(--accent)}
-.ptext{font-family:var(--arabic);direction:rtl;text-align:right;font-size:24px;line-height:2.3;
+  cursor:pointer;padding:2px 7px}
+.nav button:hover{color:var(--madder)}
+.ptext{font-family:var(--arabic);direction:rtl;text-align:right;font-size:25px;line-height:2.3;
   white-space:pre-wrap}
-.meta{font-size:12.5px;color:var(--soft);margin-top:20px;padding-top:12px;border-top:1px solid var(--rule)}
-.meta a{border-bottom:1px solid var(--rule)}
+.meta{font-size:12.5px;color:var(--soft);margin-top:20px;padding-top:13px;border-top:1px solid var(--rule)}
 
-/* apparatus — corrections and notes sit like a critical apparatus, small and beneath */
-.app{margin-top:22px;padding-top:14px;border-top:1px solid var(--ink)}
-.app h4{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--soft);
-  margin:0 0 8px;font-weight:400}
-textarea{width:100%;min-height:80px;padding:10px 11px;font:19px/1.95 var(--arabic);
-  direction:rtl;text-align:right;border:1px solid var(--rule);background:transparent;color:inherit}
-textarea:focus{outline:none;border-color:var(--accent)}
-.act{display:flex;gap:12px;align-items:center;margin:8px 0 18px;font-size:12.5px;color:var(--soft)}
-.act button{font:inherit;font-size:12px;letter-spacing:.1em;text-transform:uppercase;
-  padding:6px 13px;border:1px solid var(--ink);background:transparent;color:inherit;cursor:pointer}
+/* apparatus */
+.app{margin-top:24px;padding-top:16px;border-top:6px solid var(--madder)}
+.app h4{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--madder);
+  margin:0 0 9px;font-weight:700}
+textarea{width:100%;min-height:80px;padding:11px;font:19px/1.95 var(--arabic);
+  direction:rtl;text-align:right;border:1px solid var(--rule);background:#fff;color:inherit}
+textarea:focus{outline:none;border-color:var(--lapis)}
+.act{display:flex;gap:13px;align-items:center;margin:9px 0 18px;font-size:12.5px;color:var(--soft)}
+.act button{font:inherit;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+  padding:7px 15px;border:2px solid var(--ink);background:transparent;color:inherit;cursor:pointer}
 .act button:hover{background:var(--ink);color:var(--paper)}
-.entry{font-size:14px;padding:8px 0;border-bottom:1px dotted var(--rule)}
-.entry .who{font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft)}
+.entry{font-size:14px;padding:9px 0;border-bottom:1px dotted var(--rule)}
+.entry .who{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--madder)}
 
-.firstissue{display:grid;grid-template-columns:150px 1fr;gap:26px;align-items:start;
-  margin:38px 0 0;padding:24px 0 0;border-top:1px solid var(--rule)}
-.firstissue img{width:150px;border:1px solid var(--rule);background:#fff;display:block}
-.firstissue h3{font-family:var(--arabic);direction:rtl;font-size:32px;margin:0 0 10px;font-weight:400}
-.firstissue p{margin:0 0 9px;max-width:56ch;font-size:16.5px}
-.firstissue .small{font-size:13px;color:var(--soft)}
-@media (max-width:640px){.firstissue{grid-template-columns:1fr}}
-footer{margin:64px 0 0;border-top:1px solid var(--ink);padding:22px 0 60px;
+footer{margin:62px 0 0;border-top:8px solid var(--lapis);padding:24px 0 64px;
   font-size:14.5px;color:var(--soft)}
-footer .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:26px}
-.dlbtn{display:inline-block;border:1px solid var(--ink);border-bottom:1px solid var(--ink);
-  padding:7px 14px;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;margin-top:4px}
+footer .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:28px}
+footer h5{font-size:11px;letter-spacing:.18em;text-transform:uppercase;margin:0 0 8px;
+  color:var(--lapis);font-weight:700}
+footer p{margin:0 0 9px;max-width:44ch}
+.dlbtn{display:inline-block;border:2px solid var(--ink);padding:8px 15px;font-size:12px;
+  letter-spacing:.14em;text-transform:uppercase;margin-top:5px;font-weight:700}
 .dlbtn:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-footer h5{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;margin:0 0 7px;
-  color:var(--soft);font-weight:400}
-footer p{margin:0 0 8px;max-width:44ch}
+/* A button that reads as the inline link beside it -- copying a citation is the same kind of
+   act as following the permalink, and a boxed control there would outweigh the text. */
+.linkish{background:none;border:0;padding:0 0 0 4px;font:inherit;color:var(--lapis);
+  text-decoration:underline;cursor:pointer}
 .ok{color:#2f6b3a}.bad{color:#8f2f2f}
-@media (max-width:820px){.reader{grid-template-columns:1fr}.col.plate{order:0;border-left:0;border-bottom:1px solid var(--rule)}}
+
+/* Farsi: mirror the layout, not just the words */
+html[dir=rtl] .controls,html[dir=rtl] .field{flex-direction:row-reverse}
+html[dir=rtl] .hit{grid-template-columns:1fr 104px}
+html[dir=rtl] .hit img{order:2;border-left:0;border-right:6px solid var(--gold)}
+html[dir=rtl] .firstissue{grid-template-columns:1fr 158px}
+html[dir=rtl] .firstissue img{order:2}
+html[dir=rtl] body{font-family:var(--arabic)}
+html[dir=rtl] .en-title,html[dir=rtl] .ref,html[dir=rtl] .count,html[dir=rtl] footer h5,
+html[dir=rtl] .extent,html[dir=rtl] .subnav{letter-spacing:0}
+html[dir=rtl] .reader{direction:rtl}
+html[dir=rtl] .col.plate{order:0;border-left:0;border-right:1px solid var(--rule)}
+@media (max-width:820px){.reader{grid-template-columns:1fr}
+  .col.plate{order:0;border-left:0;border-bottom:1px solid var(--rule)}
+  .firstissue{grid-template-columns:1fr}.ar-title{font-size:38px}}
 </style>
 </head>
 <body>
+<a class="skiplink" href="#results" data-i18n="skip">Skip to search results</a>
 
 <div class="wrap">
   <header class="masthead">
+    <div class="khatam"></div>
     <h1 class="ar-title">آرشیو مطبوعات افغانستان</h1>
     <p class="en-title">Afghan Press Archive</p>
     <p class="credit" data-i18n="credit">Scans by New York University Libraries · text machine-read</p>
@@ -155,38 +182,19 @@ footer p{margin:0 0 8px;max-width:44ch}
     </div>
     <nav class="subnav">
       <a href="/" data-i18n="navSearch">Search</a> ·
+      <a href="/browse">Browse</a> ·
+      <a href="/places">Places</a> ·
       <a href="/history.html" data-i18n="navHistory">History</a> ·
       <a href="/about.html" data-i18n="navMethod">Method</a> ·
       <a href="/about.html#data" data-i18n="navData">Data</a>
     </nav>
-
-  <svg class="sarlawh" viewBox="0 0 720 74" role="img" aria-label="Illuminated headpiece in the Persianate manner">
-    <defs>
-      <pattern id="knot" width="36" height="36" patternUnits="userSpaceOnUse">
-        <path d="M0 18 L18 0 L36 18 L18 36 Z" fill="none" stroke="var(--lapis)" stroke-width="1.1" opacity=".55"/>
-        <path d="M18 8 L28 18 L18 28 L8 18 Z" fill="none" stroke="var(--gold)" stroke-width="1" opacity=".75"/>
-      </pattern>
-    </defs>
-    <rect x="1" y="14" width="718" height="46" fill="none" stroke="var(--lapis)" stroke-width="1.2" opacity=".5"/>
-    <rect x="7" y="20" width="706" height="34" fill="url(#knot)" opacity=".9"/>
-    <rect x="250" y="14" width="220" height="46" fill="var(--paper)"/>
-    <g fill="none" stroke="var(--madder,#7c3b2e)" stroke-width="1.3">
-      <path d="M360 20 C392 20 408 30 408 37 C408 44 392 54 360 54 C328 54 312 44 312 37 C312 30 328 20 360 20 Z" stroke="var(--accent)"/>
-      <path d="M360 26 C382 26 394 31 394 37 C394 43 382 48 360 48 C338 48 326 43 326 37 C326 31 338 26 360 26 Z" stroke="var(--gold)"/>
-    </g>
-    <circle cx="360" cy="37" r="4.4" fill="var(--accent)" opacity=".9"/>
-    <g stroke="var(--gold)" stroke-width="1.1" fill="none" opacity=".95">
-      <path d="M300 37 q-14 -11 -28 0 q14 11 28 0 Z"/>
-      <path d="M420 37 q14 -11 28 0 q-14 11 -28 0 Z"/>
-    </g>
-  </svg>
     <div class="rules"></div>
   </header>
 
   <div class="extent">
     <span id="x-pages">69,624 pages</span>
-    <span id="x-books">579 volumes</span>
-    <span data-i18n="where">Kabul &amp; elsewhere, 1871–1930s</span>
+    <span id="x-books">580 volumes</span>
+    <span data-i18n="where">Kabul &amp; elsewhere, 1873–1960s</span>
     <span data-i18n="langs">Persian · Dari · Pashto</span>
   </div>
 
@@ -206,10 +214,13 @@ footer p{margin:0 0 8px;max-width:44ch}
       <button id="signin" data-i18n="signin" style="border:0;background:transparent;color:var(--soft);font:inherit;font-size:13px;cursor:pointer;text-decoration:underline">Sign in</button>
     </div>
     <p class="note">
-      Spelling is normalised and the index tolerates misreadings, so period orthography and
-      modern spelling both find their way. A remembered sentence finds its page about 81% of the
-      time; a dozen words, about 60%. <em>Subject</em> searches by meaning instead of
-      wording — useful for browsing a theme, weaker for finding a known passage.
+      Letter forms are folded — <span class="ar">ی/ي</span>, <span class="ar">ک/ك</span>,
+      tatweel, vowel marks, digits — on both the text and your query, and the index works on
+      character trigrams so a misread word still matches. Historical spellings are not mapped to
+      modern ones. Tested with a verbatim sentence lifted from a printed edition, the right page
+      was in the top 20 about 81% of the time and ranked first 57%; for a dozen words, 60% and
+      21%. <em>Subject</em> searches by meaning instead of wording — offered for browsing a
+      theme, and never measured at that job.
     </p>
   </section>
 
@@ -217,7 +228,7 @@ footer p{margin:0 0 8px;max-width:44ch}
   <section class="firstissue">
     <a href="#" id="openfirst"><img src="https://storage.googleapis.com/adl-page-images/adl0616/00001.jpg" alt="First issue of Siraj al-Akhbar, Kabul, 1911"></a>
     <div>
-      <h3>سراج الاخبار افغانیه</h3>
+      <h2>سراج الاخبار افغانیه</h2>
       <p><strong>Volume 1, number 1 — Kabul, 1911.</strong> Mahmud Tarzi's <em>Torch of the News</em>,
       printed at the Mashin Khana on a press the state had only just acquired. It ran for seven
       years, argued for schools, railways and a modern Afghan nation, and taught a generation of
@@ -226,42 +237,49 @@ footer p{margin:0 0 8px;max-width:44ch}
     </div>
   </section>
 
-  <div id="results"></div>
+  <!-- A search that replaces this region silently is invisible to a screen reader: the page
+       looks unchanged and nothing is announced. aria-live makes each result set spoken, and
+       the separate status line carries the count so the announcement leads with how many
+       rather than with the first Persian snippet. -->
+  <p id="srstatus" class="visually-hidden" role="status" aria-live="polite"></p>
+  <main id="results" tabindex="-1" aria-label="Search results"></main>
 
   <footer>
     <div class="cols">
       <div>
-        <h5>The collection</h5>
-        <p>Books and periodicals printed in Afghanistan between 1871 and the 1930s, digitised by
+        <h3>The collection</h3>
+        <p>Books and periodicals printed in Afghanistan between 1873 and the 1960s, digitised by
         <a href="https://afghanistandl.nyu.edu/" target="_blank" rel="noopener">New York University
         Libraries</a>, who hold the scans. The works are in the public domain.</p>
       </div>
       <div>
-        <h5>The transcription</h5>
-        <p>Read by machine, not by hand, and <strong>not checked</strong>. Measured against
-        passages transcribed by a scholar, roughly 93 characters in 100 are correct. Treat the
-        text as a finding aid and read the page image before quoting.</p>
+        <h3>The transcription</h3>
+        <p>Read by machine, not by hand, and <strong>not checked</strong>. On 102 pages sampled
+        across the difficulty range, the median character error rate against a modern edition of
+        the same text is <strong>0.36</strong> — part of which is editorial difference rather
+        than misreading. Treat the text as a finding aid and read the page image before
+        quoting.</p>
         <p><a href="/about.html">Method, accuracy and limits →</a></p>
       </div>
       <div>
-        <h5 data-i18n="fTake">Take it with you</h5>
+        <h3 data-i18n="fTake">Take it with you</h3>
         <p data-i18n="fTakeP">Every page as JSON Lines — volume, page, text. No account, no rate
         limit. A single volume downloads from its page in the reader.</p>
         <p><a class="dlbtn" href="/api/download/corpus.jsonl" data-i18n="dl">Download the corpus ↓</a></p>
       </div>
       <div>
-        <h5 data-i18n="fCorr">Corrections</h5>
+        <h3 data-i18n="fCorr">Corrections</h3>
         <p data-i18n="fCorrP">Every page takes a suggested reading. Corrections are reviewed,
         then shown publicly and credited. Private notes stay private.</p>
-        <h5 data-i18n="fCode" style="margin-top:16px">Code &amp; ground truth</h5>
-        <p data-i18n="fCodeP">The pipeline and the 102-pair gold set are shared on request, to
-        anyone. <a href="/about.html#data">Ask for them →</a></p>
+        <h3 data-i18n="fCode" style="margin-top:16px">Code &amp; ground truth</h3>
+        <p data-i18n="fCodeP">The whole pipeline is open source.
+        <a href="https://github.com/steps-re/afghan-press-archive">On GitHub →</a></p>
       </div>
     </div>
   </footer>
 </div>
 
-<dialog id="viewer">
+<dialog id="viewer" aria-label="Page reader">
   <div class="reader">
     <div class="col plate"><img id="vimg" alt=""></div>
     <div class="col">
@@ -277,12 +295,12 @@ footer p{margin:0 0 8px;max-width:44ch}
       <div class="meta" id="vmeta"></div>
 
       <div class="app">
-        <h4 data-i18n="sugg">Suggest a reading</h4>
+        <h3 data-i18n="sugg">Suggest a reading</h3>
         <textarea id="cbody" placeholder="…"></textarea>
         <div class="act"><button id="csend" data-i18n="submit">Submit</button>
           <span>Reviewed before it appears. Credited to you.</span><span id="cmsg"></span></div>
 
-        <h4 data-i18n="note">Private note</h4>
+        <h3 data-i18n="note">Private note</h3>
         <textarea id="abody" placeholder="…"></textarea>
         <div class="act"><button id="asend" data-i18n="save">Save</button>
           <span>Visible only to you.</span><span id="amsg"></span></div>
@@ -314,7 +332,7 @@ const FA = {
   navSearch:"جستجو", navHistory:"تاریخچه", navMethod:"روش کار", navData:"داده‌ها",
   fTake:"دریافت داده‌ها", dl:"دریافت کل مجموعه ↓",
   fCorr:"تصحیح‌ها", fCorrP:"برای هر صفحه می‌توان قرائت پیشنهاد کرد. پیشنهادها بررسی و سپس با نام پیشنهاددهنده منتشر می‌شوند. یادداشت‌های خصوصی خصوصی می‌مانند.",
-  fCode:"کد و دادهٔ مرجع", fCodeP:"خط لولهٔ پردازش و مجموعهٔ ۱۰۲ جفت مرجع، به درخواست در اختیار هر کسی قرار می‌گیرد.",
+  fCode:"کد و دادهٔ مرجع", fCodeP:"تمام خط لولهٔ پردازش متن‌باز است.",
   fTakeP:"هر صفحه در قالب JSON Lines — جلد، شمارهٔ صفحه، متن. بدون حساب کاربری و بدون محدودیت. هر جلد را می‌توان از صفحهٔ خودش گرفت.",
   results:"صفحه", ms:"میلی‌ثانیه",
   hint:"املا یکسان‌سازی می‌شود و نمایه خطاهای خوانش را تحمل می‌کند، پس هم املای دورهٔ قدیم و هم املای امروزی نتیجه می‌دهد. یک جملهٔ کامل حدود ۸۱٪ و ده دوازده واژه حدود ۶۰٪ صفحهٔ درست را می‌یابد.",
@@ -362,9 +380,33 @@ applyLang();
 
 /* Firebase loads only when a reader chooses to sign in — reading the archive requires no
    third-party script and leaves no trace with anyone but us. */
+/* Sign-in is not open yet. Rather than let the button call Firebase with an empty key and throw
+   an SDK error at the reader, ask the server whether it is configured and, if not, say so and
+   offer the one channel that does work. */
+let authConfigured=null;
+async function authAvailable(){
+  if(authConfigured===null){
+    try{ authConfigured=(await (await fetch('/api/authconfig')).json()).configured===true; }
+    catch(e){ authConfigured=false; }
+  }
+  return authConfigured;
+}
+(async()=>{
+  if(await authAvailable()) return;
+  const b=$('#signin'); if(b){ b.textContent='corrections opening soon'; b.disabled=true;
+    b.title='Reader sign-in is not open yet. Write to us and we will log the correction.';
+    b.style.cursor='default'; b.style.textDecoration='none'; }
+  document.querySelectorAll('.app').forEach(el=>{
+    el.innerHTML='<p class="note" style="margin:0">Reader corrections are not open yet. '+
+      'If you spot a misreading, email <a href="mailto:mike@stepsventures.com">'+
+      'mike@stepsventures.com</a> with the volume and page number and it will be recorded '+
+      'against this page.</p>'; });
+})();
+
 async function initAuth(){
   if(auth) return;
   const cfg=await (await fetch('/api/authconfig')).json();
+  if(!cfg.configured) throw new Error('sign-in not configured');
   const [{initializeApp},m]=await Promise.all([
     import('https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js'),
     import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js')]);
@@ -400,12 +442,14 @@ async function search(){
   if(!r.results.length){
     $('#results').innerHTML='<div class="count">nothing found</div>'+
       '<p class="note">Try a longer stretch of text. Short queries miss the right page about a third of the time.</p>';
+    $('#srstatus').textContent='No pages found.';
     return;
   }
+  $('#srstatus').textContent=`${r.results.length} pages found.`;
   $('#results').innerHTML=
     `<div class="count">${LANG==='fa'?faDigits(r.results.length)+' '+FA.results+' · '+faDigits(r.ms)+' '+FA.ms:r.results.length+' pages · '+r.ms+' ms'}${r.semantic_available?'':(LANG==='fa'?'':' · subject search unavailable')}</div>`+
     r.results.map(x=>`<div class="hit" data-b="${x.book}" data-p="${x.page}">
-      <img loading="lazy" src="${x.image}" alt="">
+      <img loading="lazy" src="${x.image}" alt="Scanned page ${x.page} of ${x.book}">
       <div><div class="ref">${x.book} · page ${x.page}</div>
       <div class="ar">${esc(x.snippet)}</div></div></div>`).join('');
   document.querySelectorAll('.hit').forEach(el=>
@@ -420,14 +464,27 @@ async function openPage(book,page){
   const d=await (await fetch(`/api/page/${book}/${page}`)).json();
   cur={book,page,lo:d.first_page,hi:d.last_page};
   $('#vimg').src=d.image; $('#vtext').textContent=d.text;
+  $('#vimg').alt=`Scanned page ${page} of ${d.title||book}`;
+  // A hit list gives no way to reach the permanent address of what you are reading. This is
+  // also the URL a IIIF viewer and the sitemap point at, so the SPA and the crawlable site
+  // agree on where a page lives.
+  const perm=$('#vperm'); if(perm){ perm.href=`/book/${book}/${page}`; }
   $('#vref').textContent=`${book} · page ${page} of ${d.last_page}`;
   $('#vmeta').innerHTML=
     `Machine-read, unchecked — the image above is the source of record.<br>
      <a href="${d.source}" target="_blank" rel="noopener">This volume at NYU</a> ·
      <a href="${d.source_pdf}" target="_blank" rel="noopener">original scan (PDF)</a> ·
-     <a href="/api/download/book/${book}.jsonl">volume text</a><br>
-     <span style="opacity:.8">Cite as: Afghanistan Digital Library, ${book}, p.${page};
-     transcription machine-generated, retrieved ${new Date().toISOString().slice(0,10)}.</span>`;
+     <a href="/api/download/book/${book}.jsonl">volume text</a> ·
+     <a id="vperm" href="/book/${book}/${page}">permanent link to this page</a> ·
+     <a href="/iiif/${book}/manifest">IIIF</a><br>
+     <span style="opacity:.8">Cite as: <span id="vcite"></span>
+     <button id="vcopy" type="button" class="linkish">copy</button></span>`;
+  // Rendered as text, not interpolated into the HTML above: a catalogue title carries
+  // apostrophes and diacritics straight from NYU's record.
+  const cite=(d.citation&&d.citation.chicago)||`Afghanistan Digital Library, ${book}, p.${page}.`;
+  $('#vcite').textContent=cite;
+  $('#vcopy').onclick=()=>{ navigator.clipboard.writeText(cite).then(()=>{
+    $('#vcopy').textContent='copied'; setTimeout(()=>$('#vcopy').textContent='copy',1500); }); };
   ['#cbody','#abody'].forEach(s=>$(s).value=''); $('#cmsg').textContent=''; $('#amsg').textContent='';
   loadApparatus(book,page);
   $('#viewer').showModal();

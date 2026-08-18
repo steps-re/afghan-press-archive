@@ -1,0 +1,10 @@
+# Upload filter for `gcloud run deploy --source .`. Without this the 127M .venv and 172M dist/
+# ride along in every deploy and make a slow upload much slower. Mirrors .dockerignore.
+.gcloudignore
+__pycache__/
+*.pyc
+.venv/
+dist/
+designs/
+data/*.jsonl
+data/_geonames_cache.json

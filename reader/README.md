@@ -1,7 +1,7 @@
 # Afghan Press Archive — afghanpress.org
 
 Search and reading interface over 69,624 machine-read pages of the Afghanistan Digital
-Library (579 volumes, 1871–1930s). Scans are NYU's; the transcription and index are ours.
+Library (580 volumes, 1873–1960s). Scans are NYU's; the transcription and index are ours.
 
 ## Why it is built this way
 
@@ -15,7 +15,7 @@ Every design choice traces to a measurement in [`../RESULTS.md`](../RESULTS.md):
 | Semantic kept as an explicit mode | It is the only thing that can answer a topical query; the gold set cannot measure that, so it is offered, not defaulted |
 | Query keeps the **40 rarest** trigrams | `_و_` matches 59,207 of 69,624 pages. Latency 2.5s → 1.3s, accuracy unchanged |
 | Raw text is never rewritten | AI "cleanup" measurably alters 3–5% of already-correct text |
-| Page image beside every result | Transcription is a finding aid at ~93% character accuracy; the image is the source of record |
+| Page image beside every result | The transcription is a finding aid, not an edition: 0.36 median CER against a modern printed edition on a difficulty-representative sample. The image is the source of record |
 
 ## Layout
 

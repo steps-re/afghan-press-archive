@@ -13,7 +13,7 @@ from htr import bench
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 GS = os.path.join(HERE, "work", "gold_sources")
-DEFAULT_BACKENDS = ["gemini-2.5-pro", "gemini-2.5-flash", "gemini-3.1-pro", "gemini-3.6-flash", "gpt-5.6-sol"]
+DEFAULT_BACKENDS = ["gemini-2.5-pro", "gemini-3.7-flash", "gemini-3.1-pro", "gemini-3.7-flash", "gpt-5.6-sol"]
 BACKENDS = os.environ.get("HTR_BACKENDS", "").split(",") if os.environ.get("HTR_BACKENDS") else DEFAULT_BACKENDS
 BACKENDS = [b for b in BACKENDS if b]
 

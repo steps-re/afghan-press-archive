@@ -9,6 +9,7 @@
 <body>
 <div class="wrap">
   <header class="masthead">
+    <div class="khatam"></div>
     <p class="en-title"><a href="/">Afghan Press Archive</a></p>
     <nav class="subnav"><a href="/">Search</a> · <a href="/history.html">History</a> ·
       <a href="/about.html">Method</a> · <a href="#data">Data</a></nav>
@@ -21,8 +22,8 @@
     here is hidden, and the numbers are measurements rather than estimates.</p>
 
     <h2>What this is</h2>
-    <p>Every page of the Afghanistan Digital Library — 69,624 pages across 579 volumes of books
-    and periodicals printed in Afghanistan between roughly 1871 and the 1930s — has been read by
+    <p>Every page of the Afghanistan Digital Library — 69,624 pages across 580 volumes of books
+    and periodicals printed in Afghanistan between 1873 and the 1960s — has been read by
     a machine and indexed for search. Until now the collection was searchable only by title.
     The scans and the collection are the work of
     <a href="https://afghanistandl.nyu.edu/" target="_blank" rel="noopener">New York University
@@ -30,7 +31,7 @@
 
     <h2>How the text was made</h2>
     <p>Each page was rendered at 300 dpi and read once by a vision-language model
-    (<span class="mono">gemini-3.1-pro</span>), prompted to preserve the original orthography, to
+    (<span class="mono">gemini-3.1-pro-preview</span>), prompted to preserve the original orthography, to
     keep the reading order of multi-column pages, and to mark unclear words rather than guess
     silently. No hand correction has been applied. The whole collection was read for about
     <span class="mono">$290</span> of donated cloud credit.</p>
@@ -40,15 +41,27 @@
     documented below.</p>
 
     <h2>How accurate it is</h2>
-    <p>Accuracy was measured two ways, and the difference between them matters.</p>
-    <p><strong>Against a modern printed edition</strong> of the same articles, the character
-    error rate is about 32%. That number is misleading on its own: a modern editor normalises
-    spelling, adds punctuation and regularises archaic forms, so much of that 32% is the distance
-    between a 1911 lithograph and a 2008 reprint, not a misreading.</p>
-    <p><strong>Against passages transcribed by a scholar directly from the page</strong>, the
-    character error rate is about <strong>7%</strong> — roughly 93 characters correct in 100.
-    That is the honest figure for reading error. It rests on three passages, so treat it as an
-    indication rather than a settled result.</p>
+    <p>Start with the number to plan around. Measured on <strong>102 pages sampled evenly across
+    the difficulty range</strong>, in the configuration actually used to read the collection, the
+    median character error rate is <strong>0.36</strong> — roughly two thirds of characters
+    agreeing. The reference is the 2008 Farhadi typeset edition of <em>Maqalat-e Tarzi</em>,
+    aligned page by page against the <em>Siraj al-akhbar</em> lithograph: the same author's
+    prose, in modern type.</p>
+    <p>That number understates the reading, and it is worth knowing by how much and why. The 2008
+    editor normalises spelling and adds punctuation, so part of the gap is editorial distance
+    rather than a misreading. A floor of about <strong>0.19</strong> was measured for that
+    effect — but on a different pairing, Sa'di's <em>Bustan</em> against the Ganjoor canonical
+    text, which is classical verse rather than journalism. Carrying it across is an analogy, not
+    a measurement. Subtracting it entirely would imply roughly 83% of characters correct, and
+    nobody has verified that.</p>
+    <p>You may see a figure of <strong>93%</strong> quoted for this project. This site used to
+    lead with it and should not have. It comes from three passages of <em>Anis</em>, a newspaper
+    of the 1940s: later letterpress, later period, and the easiest printing in the collection. It
+    says almost nothing about an 1880s Kabul lithograph, and three passages is an indication
+    rather than a measurement.</p>
+    <p>The blunt version: <strong>no page-level human transcription of these lithographs exists
+    anywhere</strong>, so this corpus has never been scored properly. If your institution holds
+    even a few transcribed pages, that would fix the single biggest gap in this project.</p>
     <p>Put plainly: <strong>the text is good enough to find a page and to read what it is
     about. It is not good enough to quote.</strong> Read the image.</p>
 
@@ -76,21 +89,39 @@
     <ul>
       <li><strong>Reading order on dense multi-column pages</strong> is unverified. Text may be
       stitched together across columns in the wrong sequence.</li>
-      <li><strong>72 pages returned nothing at all</strong> and are blank in the index.</li>
-      <li><strong>Nobody has checked any of this by hand.</strong> The accuracy figure comes from
-      three passages of one newspaper.</li>
-      <li><strong>Dates, issue numbers and titles are not yet extracted</strong>, so you cannot
-      filter by year. Volume identifiers are NYU's.</li>
-      <li>The measurement above comes from one paper (Anis, 1947–50) and one period. Older
-      lithographs are harder and are probably read less well.</li>
+      <li><strong>4,033 pages of 69,624 (5.8%) came back as blank</strong> and carry no text.
+      Most are genuinely blank leaves; how many are pages the reader simply failed on has not
+      been measured, and the obvious test does not work here — these scans are dark, so blank
+      leaves carry <em>more</em> ink than text pages and a brightness rule runs backwards.</li>
+      <li><strong>Nobody has corrected any of this by hand.</strong> No page in the corpus has
+      been through a human reader. The 102 gold pages were used to measure the text, not to
+      repair it.</li>
+      <li><strong>Issue numbers and per-page dates are not extracted.</strong> Volume-level
+      titles, authors, publishers, dates and subjects come from NYU's own catalogue and drive
+      <a href="/browse">browse</a>, so you can filter by decade and subject, but not to the
+      individual issue. Volume identifiers are NYU's. NYU serves a record for 579 of the 580
+      volumes: adl0277's record page is empty on their site, so that volume browses as
+      untitled and undated.</li>
+      <li><strong>Dates are NYU's, and they are mixed calendars.</strong> The ADL prints the
+      Hijri year and usually glosses it in brackets, so browse uses the Gregorian year where
+      the record carries one and leaves the volume undated where it does not — 10 volumes.
+      Nothing is converted between calendars here. The bulk of the collection is the 1920s
+      (331 volumes); 79 are dated 1940 or later, which is later than this archive used to
+      claim.</li>
+      <li>The measurement above comes from one title and one period — Siraj al-akhbar,
+      1911–1918, against the 2008 Farhadi edition. It is a Kabul lithograph, which is the hard
+      case, but a single one. How the corpus reads across other presses and decades is
+      unmeasured.</li>
     </ul>
 
     <h2>Corrections</h2>
-    <p>Every page accepts a suggested reading. Suggestions are reviewed before they appear, and
-    are credited to whoever made them. The machine transcription is never overwritten — a
-    correction sits beside it, so the record of what the machine read stays intact.</p>
-    <p>Private notes are exactly that: stored against your account, shown to nobody else, and
-    never reviewed by us.</p>
+    <p>Reader sign-in is not open yet, so the correction form on each page is disabled. If you
+    spot a misreading, email <a href="mailto:mike@stepsventures.com">mike@stepsventures.com</a>
+    with the volume and page number and it will be recorded against that page.</p>
+    <p>When it opens, suggestions will be reviewed before they appear and credited to whoever
+    made them. The machine transcription is never overwritten — a correction sits beside it, so
+    the record of what the machine read stays intact. Private notes will be exactly that: stored
+    against your account, shown to nobody else, and never reviewed by us.</p>
 
     <h2>Rights</h2>
     <p>NYU states that the works are in the public domain and that the images "may be freely
@@ -102,7 +133,7 @@
     <h2 id="work">What was actually done</h2>
     <p>In sequence, and with the cost of each, because the numbers are the interesting part:</p>
     <ol>
-      <li><strong>Read the collection.</strong> All 579 volumes fetched from NYU, rendered at
+      <li><strong>Read the collection.</strong> All 580 volumes fetched from NYU, rendered at
       300 dpi, and read page by page by a vision-language model.
       <span class="mono">67,909</span> pages in the batch run plus a previously-transcribed
       volume, for <span class="mono">$288</span> of donated cloud credit.</li>
@@ -151,21 +182,22 @@
     the reader. No account, no rate limit, no attribution requirement beyond crediting NYU for
     the scans.</p>
     <p>The pipeline behind all of this — fetching, rendering, reading, the alignment that built
-    the ground truth, every benchmark harness, and this site — is a single repository. It is not
-    public yet, but it is <strong>shared on request, to anyone, for any purpose</strong>.</p>
+    the ground truth, every benchmark harness, and this site — is
+    <a href="https://github.com/steps-re/afghan-press-archive">open source on GitHub</a>,
+    released on the same terms as the scans.</p>
     <div class="ask">
-      <h3>Ask for the code</h3>
+      <h3>The code, and the ground truth</h3>
       <p>Useful if you want to check how a number on this page was produced, run the readers
       against your own pages, or reuse the alignment method — taking a modern reprint of a text
       and using it to generate ground truth for the original, without transcribing by hand. That
       technique transfers to any corpus in the same position, and it is the part most likely to
       be worth someone else's time.</p>
       <p class="askline">
-        <a href="mailto:mike@stepsventures.com?subject=Afghan%20Press%20Archive%20%E2%80%94%20code%20request&amp;body=Hello%2C%0A%0AI%27d%20like%20access%20to%20the%20Afghan%20Press%20Archive%20repository.%0A%0AWho%20I%20am%3A%0AWhat%20I%27d%20use%20it%20for%3A%0A%0AThanks%2C">Request access →</a>
+        <a href="https://github.com/steps-re/afghan-press-archive">github.com/steps-re/afghan-press-archive →</a>
       </p>
-      <p class="small">Same for the <strong>102-pair gold set</strong>: aligned page images and
-      verified text for lithographed nasta&#39;liq, which as far as we know does not otherwise
-      exist. Ask and it is yours.</p>
+      <p class="small">The <strong>102-pair gold set</strong> — aligned page images and verified
+      text for lithographed nasta&#39;liq, which as far as we know does not otherwise exist — is
+      <a href="mailto:mike@stepsventures.com?subject=Afghan%20Press%20Archive%20%E2%80%94%20gold%20set">yours on request</a>.</p>
     </div>
 
     <h2 id="cite">Citing it</h2>

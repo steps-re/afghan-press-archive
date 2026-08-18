@@ -39,18 +39,20 @@ WORKERS = int(os.environ.get("CB_WORKERS", "10"))
 # which is what 3.x uses. Keep this table honest -- every cost number below comes from it.
 PRICE = {
     "gemini-3.1-pro-preview": (2.00, 12.00),
+    # Introductory rate through 2026-12-31; reverts to (1.50, 7.50) after.
+    "gemini-3.7-flash":       (0.75,  3.75),
     "gemini-3.6-flash":       (1.50,  7.50),
     "gemini-3.1-flash-lite":  (0.25,  1.50),
+    "gemini-3.5-flash-lite":  (0.30,  2.50),
     "gemini-2.5-pro":         (1.25, 10.00),
-    "gemini-2.5-flash":       (0.30,  2.50),
 }
 
 # (label, model, thinking_level or None for the model default)
 ARMS = json.loads(os.environ["CB_ARMS"]) if os.environ.get("CB_ARMS") else [
     ["pro-default",        "gemini-3.1-pro-preview", None],
     ["pro-low",            "gemini-3.1-pro-preview", "low"],
-    ["flash-default",      "gemini-3.6-flash",       None],
-    ["flash-low",          "gemini-3.6-flash",       "low"],
+    ["flash-default",      "gemini-3.7-flash",       None],
+    ["flash-low",          "gemini-3.7-flash",       "low"],
     ["lite-default",       "gemini-3.1-flash-lite",  None],
     ["lite-minimal",       "gemini-3.1-flash-lite",  "minimal"],
 ]

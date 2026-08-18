@@ -1,50 +1,54 @@
 @font-face{font-family:Amiri;src:url(/fonts/amiri-arabic.woff2) format('woff2');
   unicode-range:U+0600-06FF,U+0750-077F,U+08A0-08FF,U+FB50-FDFF,U+FE70-FEFC;font-display:swap}
+/* Same synthesis language as the reader: Swiss/constructivist structure, Herat pigments. */
 :root{
-  --paper:#faf6ec; --ink:#23201a; --soft:#6f6757; --rule:#ddd4be; --accent:#7c3b2e;
-  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+  --paper:#faf5e8; --ink:#221d14; --soft:#6f6757; --rule:#ddd4be;
+  --lapis:#1f3a6e; --gold:#b08d3f; --madder:#7c3b2e; --accent:#7c3b2e;
+  --sans:"Helvetica Neue",Helvetica,Arial,sans-serif;
   --arabic:Amiri,"Noto Naskh Arabic",serif;
+  color-scheme:light;
 }
-/* light in every context, to match the reader */
-:root{color-scheme:light}
 *{box-sizing:border-box}
-body{margin:0;background:var(--paper);color:var(--ink);
-  font:19px/1.7 var(--serif);font-variant-numeric:oldstyle-nums}
-.wrap{max-width:720px;margin:0 auto;padding:0 26px}
+body{margin:0;background:var(--paper);color:var(--ink);font:18px/1.7 var(--sans)}
+.wrap{max-width:760px;margin:0 auto;padding:0 30px}
 a{color:inherit;border-bottom:1px solid var(--rule);text-decoration:none}
-a:hover{border-bottom-color:var(--accent)}
-.masthead{padding:34px 0 0;text-align:center}
-.en-title{font-size:12.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--soft);margin:0}
+a:hover{border-bottom-color:var(--madder)}
+.khatam{height:22px;margin:0 -30px;background:
+  repeating-conic-gradient(from 45deg,var(--madder) 0 25%,transparent 0 50%) 0 0/22px 22px,
+  repeating-conic-gradient(from 45deg,var(--gold) 0 25%,transparent 0 50%) 11px 11px/22px 22px;
+  opacity:.42}
+.masthead{padding:28px 0 0;text-align:center}
+.en-title{font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--madder);
+  margin:0;font-weight:700}
 .en-title a{border:0}
-.rules{border-top:2px solid var(--ink);border-bottom:1px solid var(--ink);height:4px;margin:18px 0 0}
-article{padding:40px 0 70px}
-h1{font-size:31px;font-weight:400;margin:0 0 6px;line-height:1.25}
-.lede{color:var(--soft);font-size:17.5px;margin:0 0 34px;max-width:56ch}
-h2{font-size:13.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--soft);
-  font-weight:400;margin:34px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--rule)}
-p{margin:0 0 13px;max-width:64ch}
-ul{margin:0 0 13px;padding-left:20px;max-width:64ch}
-li{margin-bottom:7px}
+.subnav{margin:14px 0 0;font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--soft)}
+.subnav a{border:0;padding:0 4px}
+.subnav a:hover{color:var(--lapis)}
+.rules{border-top:6px solid var(--lapis);border-bottom:1px solid var(--gold);height:5px;margin:22px 0 0}
+article{padding:42px 0 74px}
+h1{font-size:33px;font-weight:400;margin:0 0 8px;line-height:1.22;color:var(--lapis)}
+.lede{color:var(--soft);font-size:17.5px;margin:0 0 36px;max-width:56ch}
+h2{font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--madder);
+  font-weight:700;margin:38px 0 12px;padding-bottom:7px;border-bottom:2px solid var(--lapis)}
+p{margin:0 0 14px;max-width:64ch}
+ul,ol{margin:0 0 14px;padding-left:22px;max-width:64ch}
+li{margin-bottom:8px}
+ol li{margin-bottom:11px}
 .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9em}
-.ar{font-family:var(--arabic);font-size:1.08em}
-table{border-collapse:collapse;margin:6px 0 16px;font-size:16.5px;width:100%;max-width:64ch}
-th{text-align:left;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--soft);font-weight:400;border-bottom:1px solid var(--ink);padding:6px 12px 6px 0}
-td{padding:7px 12px 7px 0;border-bottom:1px solid var(--rule)}
-.cite{border-left:2px solid var(--rule);padding:9px 0 9px 15px;color:var(--soft);font-size:15.5px}
-.foot{margin-top:40px;padding-top:14px;border-top:1px solid var(--ink);font-size:14px}
-strong{font-weight:700}
-
-.subnav{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--soft);margin:12px 0 0}
-.subnav a{border:0}
-.subnav a:hover{color:var(--accent)}
-ol{margin:0 0 13px;padding-left:22px;max-width:64ch}
-ol li{margin-bottom:10px}
-
-.ask{border:1px solid var(--rule);border-left:3px solid var(--accent);padding:20px 22px;margin:18px 0 6px;background:rgba(124,59,46,.035)}
-.ask h3{font-size:13px;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin:0 0 10px;font-weight:400}
-.ask p{margin:0 0 10px}
-.askline a{display:inline-block;border:1px solid var(--ink);padding:8px 16px;font-size:13px;
-  letter-spacing:.1em;text-transform:uppercase}
+.ar{font-family:var(--arabic);font-size:1.1em}
+table{border-collapse:collapse;margin:8px 0 18px;font-size:16.5px;width:100%;max-width:64ch}
+th{text-align:left;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--lapis);font-weight:700;border-bottom:2px solid var(--lapis);padding:7px 12px 7px 0}
+td{padding:8px 12px 8px 0;border-bottom:1px solid var(--rule)}
+.cite{border-left:4px solid var(--gold);padding:10px 0 10px 16px;color:var(--soft);font-size:16px}
+.ask{border:2px solid var(--lapis);border-left:8px solid var(--gold);padding:22px 24px;
+  margin:20px 0 8px;background:rgba(31,58,110,.04)}
+.ask h3{font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--madder);
+  margin:0 0 11px;font-weight:700}
+.ask p{margin:0 0 11px}
+.askline a{display:inline-block;border:2px solid var(--ink);padding:9px 17px;font-size:12px;
+  letter-spacing:.14em;text-transform:uppercase;font-weight:700}
 .askline a:hover{background:var(--ink);color:var(--paper)}
-.ask .small{font-size:14px;color:var(--soft);margin-bottom:0}
+.ask .small{font-size:14.5px;color:var(--soft);margin-bottom:0}
+.foot{margin-top:44px;padding-top:16px;border-top:8px solid var(--lapis);font-size:14.5px}
+strong{font-weight:700}

@@ -1,3 +1,7 @@
 __pycache__/
 *.pyc
 data/*.jsonl
+data/_geonames_cache.json
+dist/
+designs/
+.venv/

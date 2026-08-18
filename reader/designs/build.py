@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate ten design treatments of the Afghan Press Archive, for choosing between.
+"""Generate the shortlisted design treatments of the Afghan Press Archive.
 
 Every variant renders the SAME real content — the same three pages, the same Persian text, the
 same page images from the archive. Nothing is mocked. A design that only looks good on lorem
@@ -243,6 +243,11 @@ DESIGNS = [
  """),
 ]
 
+# Shortlist: the four that survived review, plus the synthesis they pointed at. The rest stay
+# in the list above so the exploration is not lost, but they are not built or published.
+KEEP = {"02-swiss", "03-modern-afghan", "04-illuminated", "08-constructivist", "12-synthesis-warm"}
+DESIGNS = [d for d in DESIGNS if d[0] in KEEP]
+
 PAGE = """<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{n}. {name} — Afghan Press Archive design study</title>
@@ -266,8 +271,8 @@ body{{padding-top:34px}}
 html[dir=rtl] .hit{{direction:rtl}}
 html[dir=rtl] .cols{{direction:rtl}}
 </style></head><body>
-<div class="bar"><b>{n} / 10 · {name}</b><span>{tag}</span>
- <span style="flex:1"></span><button id="lang">فارسی</button><a href="/">all ten</a>{prev}{next}</div>
+<div class="bar"><b>{n} / {total} · {name}</b><span>{tag}</span>
+ <span style="flex:1"></span><button id="lang">فارسی</button><a href="/">all</a>{prev}{next}</div>
 <div class="wrap">
 <header>{orn}
   <div class="{platecls}">
@@ -337,7 +342,7 @@ for i, (slug, name, tag, css) in enumerate(DESIGNS, 1):
     nxt = f' <a href="/{DESIGNS[i][0]}.html">next →</a>' if i < len(DESIGNS) else ""
     # broadsheet wants its nameplate rules between title and meta
     head_extra = '<div class="rule2"></div>' if slug.startswith("05") else ""
-    html = PAGE.format(n=i, name=name, tag=tag, font=ARABIC_FONT, css=css, orn=orn + head_extra,
+    html = PAGE.format(n=i, total=len(DESIGNS), name=name, tag=tag, font=ARABIC_FONT, css=css, orn=orn + head_extra,
                        ar=AR_TITLE, en=EN_TITLE, en_fa=EN_TITLE_FA, blurb=BLURB,
                        blurb_fa=BLURB_FA, credit=CREDIT, credit_fa=CREDIT_FA, hits=hits,
                        platecls=("plate" if slug.startswith("11") else "head"),
@@ -349,7 +354,7 @@ for i, (slug, name, tag, css) in enumerate(DESIGNS, 1):
 
 INDEX = """<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Afghan Press Archive — ten design studies</title>
+<title>Afghan Press Archive — design studies</title>
 <style>%s
 *{box-sizing:border-box}
 body{background:#faf6ec;color:#23201a;font:17px/1.6 'Iowan Old Style',Palatino,Georgia,serif;margin:0}
@@ -366,10 +371,10 @@ h1{font-family:Amiri,serif;direction:rtl;font-size:44px;margin:0}
 .name{font-size:21px;margin:7px 0 8px}
 .tag{font-size:14px;color:#6f6757;line-height:1.5}
 </style></head><body><div class="wrap">
-<header><h1>آرشیو مطبوعات افغانستان</h1><p class="en">Ten design studies</p>
-<p class="lede">The same archive, the same three pages, the same Persian text and page images —
-rendered ten ways, from stripped-back brutalism to outright absurdism. Nothing is mocked up:
-every variant shows real content, because a design that only works on filler text is not a design.</p>
+<header><h1>آرشیو مطبوعات افغانستان</h1><p class="en">Design studies</p>
+<p class="lede">The same archive rendered several ways. Each one is a working interface over the
+live collection rather than a mock-up: search it, open a page, page through the scan, switch the
+interface to Persian. Nothing here is filler text.</p>
 <div class="rules"></div></header>
 <div class="grid">%s</div>
 </div>

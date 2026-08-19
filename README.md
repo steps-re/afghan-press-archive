@@ -41,7 +41,7 @@ modern reprint. Both the code and the gold set are yours on request.
 
 | | |
 |---|---|
-| Reading accuracy vs a modern printed **edition**, representative sample | **0.36 median CER** (n=102) — ~0.19 of that is editorial recension, not misreading |
+| Reading accuracy vs a modern printed **edition**, representative sample | **0.36 median CER** (n=102). Part of that is editorial recension rather than misreading: a floor of ~0.19 was measured for that effect, but on a *different* pairing (Sa'di against Ganjoor), so carrying it across is an analogy, not a measurement |
 | Reading accuracy vs **human** transcription | ~93% of characters, but **n=3 passages of a 1940s newspaper** — easier printing than most of the corpus. An indication, not a measurement |
 | Search: right page in top 20, long quote | **81%** |
 | Search: right page in top 20, short phrase | **60%** |

@@ -12,7 +12,8 @@ Config is the one the measurements actually support (see RESULTS.md):
     rule separates them safely (30% recall at best, worth ~$4). Let the model return
     [BLANK PAGE], which it does reliably.
 
-~$500 for the remaining ~63,000 pages, versus $9,030 for the naive online default-thinking read.
+Projected ~$500 for the remaining ~63,000 pages, versus $9,030 for the naive online
+default-thinking read. Actual spend for the whole collection came in at $288.
 
 Resumable by construction: every page already present in the output file is skipped, so a
 killed run is restarted by re-running the same command.

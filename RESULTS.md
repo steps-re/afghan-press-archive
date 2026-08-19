@@ -276,7 +276,10 @@ flip on quality (43/88, p=0.92) while causing nearly twice Pro's false correctio
 **3. The economics decide the architecture.** A correction pass costs **more than double the
 read it corrects** — $0.021/page (L2) or $0.018/page (L3) against $0.0086 for the read itself,
 because output tokens dominate and correction regenerates the whole page. Over 59.5k pages that
-is **$1,093–1,249 to buy ~+0.01 yield**, on top of a corpus read that costs ~$510 total.
+is **$1,093–1,249 to buy ~+0.01 yield**, on top of a corpus read projected at ~$510 total.
+(That $510 is the projection at the online rate used throughout this comparison. The read was
+actually run as a batch job at roughly half that rate and came in at **$288** — see the site's
+methods page. Both numbers are right; they are on different bases.)
 
 **Never batch-correct the corpus. Correct on demand, per page, when a reader asks for it.**
 $0.02 is nothing for one person viewing one page and ruinous across 59,500.

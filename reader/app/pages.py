@@ -64,7 +64,62 @@ color:var(--soft)}
 """
 
 
-def shell(title: str, body: str, desc: str = "", jsonld: str = "", lang: str = "en") -> str:
+def dublin_core_meta(rec: dict, title: str, date: str, url: str, page=None) -> str:
+    """Dublin Core as <meta>, plus a canonical URL.
+
+    schema.org JSON-LD is what search engines read. It is not what a scholar's tools read:
+    Zotero, and most library-side harvesters, look for Dublin Core meta tags or a COinS span.
+    Without either, capturing a page meant retyping the citation by hand, which for the audience
+    this archive is built for is the difference between usable and not."""
+    def m(name, value):
+        return f'<meta name="{name}" content="{escape(str(value))}">' if value else ""
+    subj = rec.get("subjects") or []
+    # DC.date wants ISO 8601. An en dash is display punctuation and a harvester will not parse
+    # it; "1911/1918" is the ISO interval form.
+    iso_date = date.replace("\u2013", "/") if date else ""
+    rows = [
+        f'<link rel="canonical" href="{escape(url)}">',
+        m("DC.title", title if page is None else f"{title}, page {page}"),
+        m("DC.creator", rec.get("author")),
+        m("DC.publisher", rec.get("publisher")),
+        m("DC.date", iso_date),
+        m("DC.type", "Text"),
+        m("DC.format", "text/html"),
+        m("DC.identifier", url),
+        m("DC.source", rec.get("source_record")),
+        m("DC.rights", "https://creativecommons.org/publicdomain/zero/1.0/"),
+    ]
+    rows += [m("DC.language", l) for l in ("fa", "ps")]
+    rows += [m("DC.subject", s) for s in subj[:8]]
+    if rec.get("handle"):
+        rows.append(m("DC.relation", rec["handle"]))
+    return "\n".join(r for r in rows if r)
+
+
+def coins(rec: dict, title: str, date: str, url: str, page=None) -> str:
+    """A COinS span: an OpenURL ContextObject that Zotero picks up with no translator of ours.
+
+    It is invisible, it is the most widely supported one-click capture there is, and it costs a
+    span. `bookitem` for a page, `book` for a volume, which is how a periodical issue in a bound
+    run is normally described to a reference manager."""
+    f = [("ctx_ver", "Z39.88-2004"),
+         ("rft_val_fmt", "info:ofi/fmt:kev:mtx:book"),
+         ("rft.genre", "book" if page is None else "bookitem"),
+         ("rft.btitle", title), ("rft.title", title),
+         ("rft.au", rec.get("author") or ""), ("rft.pub", rec.get("publisher") or ""),
+         # OpenURL rft.date is a single date; give the first year of the run.
+         ("rft.date", (date or "").split("\u2013")[0]), ("rft.language", "fas"),
+         ("rft_id", url)]
+    if page is not None:
+        f += [("rft.spage", str(page)), ("rft.pages", str(page))]
+    if rec.get("handle"):
+        f.append(("rft_id", rec["handle"]))
+    q = "&".join(f"{k}={quote(str(v), safe='')}" for k, v in f if v)
+    return f'<span class="Z3988" title="{escape(q)}"></span>'
+
+
+def shell(title: str, body: str, desc: str = "", jsonld: str = "", lang: str = "en",
+          head_extra: str = "") -> str:
     return f"""<!doctype html>
 <html lang="{lang}">
 <head>
@@ -72,6 +127,7 @@ def shell(title: str, body: str, desc: str = "", jsonld: str = "", lang: str = "
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{escape(title)}</title>
 <meta name="description" content="{escape(desc)}">
+{head_extra}
 <style>{CSS}</style>
 {jsonld}
 </head>
@@ -189,18 +245,28 @@ def book_page(book: str, pages: list, cat_mod, prov_mod, base: str, img_base: st
 {more}
 <div class="grid">{thumbs}</div>
 </main>"""
+    url = f"{base}/book/{book}"
+    head = dublin_core_meta(rec, title, date, url) + f"""
+<link rel="alternate" type="application/ld+json" title="IIIF Presentation 3.0 manifest" href="{base}/iiif/{book}/manifest">
+<link rel="alternate" type="text/xml" title="ALTO XML" href="{base}/api/export/{book}?format=alto">
+<link rel="alternate" type="text/xml" title="TEI XML" href="{base}/api/export/{book}?format=tei">
+<link rel="alternate" type="application/x-ndjson" title="Transcription as JSONL" href="{base}/api/download/book/{book}.jsonl">
+<link rel="alternate" type="text/xml" title="Dublin Core via OAI-PMH" href="{base}/oai?verb=GetRecord&amp;metadataPrefix=oai_dc&amp;identifier=oai:afghanpress.org:{book}">"""
+    body += coins(rec, title, date, url)
     return shell(f"{title} — Afghan Press Archive", body,
-                 desc=f"{title}. {n} pages, machine-transcribed. {date}", jsonld=jsonld)
+                 desc=f"{title}. {n} pages, machine-transcribed. {date}", jsonld=jsonld,
+                 head_extra=head)
 
 
 def reader_page(book: str, page: int, text: str, first: int, last: int, prev: int, nxt: int,
                 cat_mod, prov_mod, base: str, img_base: str, corrections: list) -> str:
     parts = cat_mod.title_parts(book)
+    rec = cat_mod.book(book)
     title = parts["romanized"] or cat_mod.label(book)
+    lo, hi = cat_mod.dates(book)
+    date = f"{lo}\u2013{hi}" if lo and hi and lo != hi else (str(lo) if lo else "")
     img = f"{img_base}/{book}/{page:05d}.jpg"
-    cite = (f"{title}, page {page}. Afghanistan Digital Library, New York University "
-            f"Libraries. Machine-transcribed text: Afghan Press Archive, "
-            f"{base}/book/{book}/{page} (accessed [date]).")
+    cite = cat_mod.citation(book, page, base)
 
     jsonld = f"""<script type="application/ld+json">{{
 "@context":"https://schema.org","@type":"DigitalDocument","name":{_j(title + ', page ' + str(page))},
@@ -262,9 +328,16 @@ width="2550" height="3301"></a>
 Library record</a></dd>
 </dl>
 </main>"""
+    purl = f"{base}/book/{book}/{page}"
+    head = dublin_core_meta(rec, title, date, purl, page=page) + f"""
+<link rel="alternate" type="application/ld+json" title="IIIF Presentation 3.0 manifest" href="{base}/iiif/{book}/manifest">
+<link rel="alternate" type="application/ld+json" title="Transcription as a IIIF annotation" href="{base}/iiif/{book}/canvas/{page}/text">
+<link rel="alternate" type="text/plain" title="Volume as plain text" href="{base}/api/export/{book}?format=txt">
+<link rel="up" href="{base}/book/{book}">"""
+    body += coins(rec, title, date, purl, page=page)
     return shell(f"{title}, page {page} — Afghan Press Archive", body,
                  desc=f"Page {page} of {title}, with page image and machine transcription.",
-                 jsonld=jsonld)
+                 jsonld=jsonld, head_extra=head)
 
 
 def _slug(s: str) -> str:

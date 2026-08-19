@@ -172,3 +172,26 @@ def facets(counts: dict) -> dict:
         "subjects": sorted(subj.values(), key=lambda r: -r["pages"]),
         "titles": by_title,
     }
+
+
+def citation(bid: str, page=None, base: str = "https://afghanpress.org") -> str:
+    """One citation string for the whole site.
+
+    There were three of these: the API built one, the server-rendered page built another, and
+    the reader printed a third that named only the object number. A reader who cited from the
+    page and one who cited from the API produced different references to the same thing.
+
+    Assembled from the parts that exist rather than one format string, so a volume with no
+    author or no publisher does not leave ". ." stranded mid-citation."""
+    rec = book(bid)
+    t = title_parts(bid)["romanized"] or label(bid)
+    url = f"{base}/book/{bid}" + (f"/{page}" if page else "")
+    bits = [b for b in (
+        (rec.get("author") or "").rstrip("."),
+        f"{t}, page {page}" if page else t,
+        (rec.get("publisher") or "").rstrip("."),
+        "Afghanistan Digital Library, New York University Libraries",
+        rec.get("handle"),
+        f"Machine-transcribed text, Afghan Press Archive, {url}",
+    ) if b]
+    return ". ".join(bits) + "."

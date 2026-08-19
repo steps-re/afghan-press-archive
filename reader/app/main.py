@@ -1058,21 +1058,9 @@ def sitemap_pages(n: int):
 
 def _citation(book: str, page: Optional[int] = None) -> dict:
     rec = catalog.book(book)
-    t = catalog.title_parts(book)["romanized"] or catalog.label(book)
-    where = f", page {page}" if page else ""
     url = f"{BASE_URL}/book/{book}" + (f"/{page}" if page else "")
-    # Built from the parts that exist rather than one format string: an absent author or
-    # publisher used to leave ". ." stranded in the middle of the citation.
-    bits = [b for b in (
-        (rec.get("author") or "").rstrip("."),
-        f"{t}{where}",
-        (rec.get("publisher") or "").rstrip("."),
-        "Afghanistan Digital Library, New York University Libraries",
-        rec.get("handle"),
-        f"Machine-transcribed text, Afghan Press Archive, {url}",
-    ) if b]
     return {
-        "chicago": ". ".join(bits) + ".",
+        "chicago": catalog.citation(book, page, BASE_URL),
         "permalink": url,
         "handle": rec.get("handle"),
         "note": "Cite the page image as the source. The transcription is a finding aid.",

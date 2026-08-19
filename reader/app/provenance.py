@@ -99,7 +99,7 @@ ACCURACY = {
         "sample": "3 passages of Anis",
         "cer": 0.07,
         "caveat": "THREE PASSAGES, from a newspaper of the 1940s. That is later letterpress, "
-                  "not the 1871-1930 lithography that makes up most of this collection, and it "
+                  "not the pre-1930 lithography that is the bulk of this collection, and it "
                   "is the easiest material in the corpus. n=3 is an indication, not a "
                   "measurement, and this figure was previously published as though it were the "
                   "accuracy of the whole archive. It is not.",

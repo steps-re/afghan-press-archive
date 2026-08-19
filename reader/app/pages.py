@@ -99,11 +99,18 @@ def _meta_rows(rec, cat_mod, book):
         if v:
             rows.append(f"<dt>{escape(k)}</dt><dd>{v}</dd>")
 
-    add("Title", escape(rec.get("title", "")))
-    add("Other titles", escape(rec.get("other_titles", "")))
-    add("Author", escape(rec.get("author", "")))
-    add("Contributors", escape(rec.get("contributors", "")))
-    add("Published", escape(rec.get("publisher", "")))
+    def esc(v):
+        """NYU prints several fields as a <br>-separated list and the catalogue keeps them as
+        one, so a value here is a string or a list of them. escape() takes only strings."""
+        if isinstance(v, (list, tuple)):
+            return "<br>".join(escape(str(x)) for x in v if x)
+        return escape(str(v)) if v else ""
+
+    add("Title", esc(rec.get("title")))
+    add("Other titles", esc(rec.get("other_titles")))
+    add("Author", esc(rec.get("author")))
+    add("Contributors", esc(rec.get("contributors")))
+    add("Published", esc(rec.get("publisher")))
     subs = cat_mod.subjects(book)
     if subs:
         add("Subjects", "".join(f'<span class="tag">{escape(s)}</span>' for s in subs))

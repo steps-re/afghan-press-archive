@@ -88,7 +88,7 @@ async def cache_headers(request, call_next):
     r.headers["X-Content-Type-Options"] = "nosniff"
     r.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
     r.headers["X-Frame-Options"] = "SAMEORIGIN"
-    r.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+    r.headers["Strict-Transport-Security"] = "max-age=15552000"
     r.headers["Content-Security-Policy"] = (
         "default-src 'self'; "
         "img-src 'self' https://storage.googleapis.com data:; "
@@ -1072,6 +1072,52 @@ def api_citation(book: str, page: Optional[int] = None):
     if book not in page_counts():
         raise HTTPException(404, "unknown book")
     return _citation(book, page)
+
+
+_OG_IMAGE = f"{BASE_URL}/og.png"
+
+
+def _og_block(html: str, page_url: str) -> str:
+    """Link-preview tags, derived from the page's own <title>, description and canonical so every
+    page (static, rendered book/page views) gets accurate ones without per-route plumbing."""
+    from html import escape as esc
+    t = re.search(r"<title>(.*?)</title>", html, re.S)
+    d = re.search(r'<meta name="description" content="([^"]*)"', html)
+    c = re.search(r'<link rel="canonical" href="([^"]*)"', html)
+    title = t.group(1).strip() if t else "Afghan Press Archive"
+    desc = d.group(1) if d else ("Full-text search across Afghan periodicals, 1873 to the 1960s, "
+                                 "with machine-read transcription and page images.")
+    url = c.group(1) if c else page_url
+    return (f'<meta property="og:type" content="website">'
+            f'<meta property="og:site_name" content="Afghan Press Archive">'
+            f'<meta property="og:title" content="{title}">'
+            f'<meta property="og:description" content="{desc}">'
+            f'<meta property="og:url" content="{esc(url)}">'
+            f'<meta property="og:image" content="{_OG_IMAGE}">'
+            f'<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">'
+            f'<meta name="twitter:card" content="summary_large_image">'
+            f'<meta name="twitter:title" content="{title}">'
+            f'<meta name="twitter:description" content="{desc}">'
+            f'<meta name="twitter:image" content="{_OG_IMAGE}">')
+
+
+@app.middleware("http")
+async def inject_og(request, call_next):
+    from starlette.responses import Response
+    r = await call_next(request)
+    if r.status_code != 200 or not r.headers.get("content-type", "").startswith("text/html"):
+        return r
+    body = b"".join([chunk async for chunk in r.body_iterator])
+    html = body.decode("utf-8", "replace")
+    if "og:title" not in html and "</head>" in html:
+        html = html.replace("</head>", _og_block(html, f"{BASE_URL}{request.url.path}") + "</head>", 1)
+    headers = {k: v for k, v in r.headers.items() if k.lower() not in ("content-length", "content-encoding")}
+    return Response(html.encode("utf-8"), status_code=200, headers=headers)
+
+
+# Compress HTML/JSON/XML: added last so it is the outermost layer.
+from starlette.middleware.gzip import GZipMiddleware
+app.add_middleware(GZipMiddleware, minimum_size=500)
 
 
 app.mount("/", StaticFiles(directory=os.path.join(os.path.dirname(__file__), "static"),

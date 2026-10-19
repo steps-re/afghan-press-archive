@@ -50,6 +50,9 @@ font-weight:700;margin:0 0 10px}
 margin:20px 0}
 .pager{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin:26px 0;font-size:15px}
 .pager .sp{flex:1}
+details{margin:6px 0}summary{cursor:pointer;font-size:17px}
+ol.issues{columns:2 18em;column-gap:32px;margin:8px 0 14px;padding:0}
+ol.issues li{break-inside:avoid;margin:3px 0}.soft{color:var(--soft);font-size:13px}
 .booktools{display:flex;gap:28px;flex-wrap:wrap;margin:22px 0;font-size:15px}
 .booktools form{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .booktools input{font:inherit;padding:5px 8px;border:1px solid currentColor;background:#fff;max-width:100%}
@@ -223,6 +226,21 @@ def book_page(book: str, pages: list, cat_mod, prov_mod, base: str, img_base: st
         f'<a href="/book/{book}/{p}"><img loading="lazy" src="{img_base}/{book}/{p:05d}.jpg" '
         f'alt="Page {p} of {escape(title)}"><span>{p}</span></a>'
         for p in shown)
+    from . import issues as iss
+    idx = iss.for_book(book)
+    issue_list = ""
+    if idx:
+        years = []
+        for y in sorted({i["year"] for i in idx["issues"]}):
+            rows = "".join(
+                f'<li><a href="/book/{book}/{i["start"]}">No. {escape(str(i.get("no_label") or i["no"]))}</a>'
+                f'{" · " + escape(iss.label(i).split(" · ", 1)[1]) if " · " in iss.label(i) else ""}'
+                f' <span class="soft">p. {i["start"]}</span></li>'
+                for i in idx["issues"] if i["year"] == y)
+            years.append(f'<details{" open" if not years else ""}><summary>Year {y}</summary>'
+                         f'<ol class="plain issues">{rows}</ol></details>')
+        issue_list = (f'<h2 id="issues">Issues held here</h2><p class="note">{escape(idx["note"])}</p>'
+                      + "".join(years))
     more = ""
     if n > STEP:
         prv = (f'<a href="/book/{book}?from={start - STEP}" rel="prev">← Previous {STEP}</a>'
@@ -274,6 +292,8 @@ def book_page(book: str, pages: list, cat_mod, prov_mod, base: str, img_base: st
 </dl>
 <p class="note">{escape(prov_mod.ACCURACY['headline'])}</p>
 {tools}
+{issue_list}
+{'<h2>All pages</h2>' if issue_list else ''}
 {more}
 <div class="grid">{thumbs}</div>
 {more}
@@ -300,6 +320,10 @@ def reader_page(book: str, page: int, text: str, first: int, last: int, prev: in
     date = f"{lo}\u2013{hi}" if lo and hi and lo != hi else (str(lo) if lo else "")
     img = f"{img_base}/{book}/{page:05d}.jpg"
     cite = cat_mod.citation(book, page, base)
+    from . import issues as iss
+    it = iss.at(book, page)
+    issue_line = (f'<p class="sub"><a href="/book/{book}/{it["start"]}">{escape(iss.label(it))}</a>'
+                  f' · page {page - it["start"] + 1} of this issue as held here</p>') if it else ""
 
     jsonld = f"""<script type="application/ld+json">{{
 "@context":"https://schema.org","@type":"DigitalDocument","name":{_j(title + ', page ' + str(page))},
@@ -325,6 +349,7 @@ def reader_page(book: str, page: int, text: str, first: int, last: int, prev: in
 <a href="/book/{book}">{escape(title)}</a> → page {page}</p>
 <h1>Page {page}</h1>
 <p class="sub"><a href="/book/{book}">{escape(title)}</a> · pages {first}–{last}</p>
+{issue_line}
 <hr class="rule">
 </header>
 <main id="main">

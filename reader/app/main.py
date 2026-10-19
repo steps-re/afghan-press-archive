@@ -404,6 +404,15 @@ def api_page(book: str, page: int):
             "citation": _citation(book, page),
             "provenance": provenance.page_record(book, page)}
 
+@app.get("/api/issues/{book}")
+def api_issues(book: str):
+    from . import issues as iss
+    d = iss.for_book(book)
+    if not d:
+        raise HTTPException(404, "no issue index for this volume")
+    return d
+
+
 @app.get("/api/books")
 def api_books():
     rows = db().execute("SELECT book, COUNT(*) n, SUM(nchars) c FROM pages "

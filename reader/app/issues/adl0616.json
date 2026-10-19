@@ -1,0 +1,965 @@
+{
+ "book": "adl0616",
+ "note": "95 issues, from years 1, 2, 4, 5 of the paper; year 3 is not in this copy. Issue boundaries were read by machine from the running heads (year, number, page) and dates from each masthead, then checked against the scans. A boundary can be a page out; the scan is the record.",
+ "method": "build/issues_lib (parse, fit, refine, dates, assemble)",
+ "built": "2026-10-19",
+ "stats": {
+  "printed_gregorian": 60,
+  "hijri_only": 30,
+  "conflict": 11,
+  "undated": 5,
+  "dropped": 1
+ },
+ "issues": [
+  {
+   "year": 1,
+   "no": 1,
+   "no_label": null,
+   "start": 10,
+   "end": 21,
+   "hijri_printed": "۱۵ شوال ۱۳۲۹",
+   "hijri_iso": "1329-10-15",
+   "gregorian": null
+  },
+  {
+   "year": 1,
+   "no": 2,
+   "no_label": null,
+   "start": 22,
+   "end": 35,
+   "hijri_printed": "یکم ذی القعده ۱۳۲۹",
+   "hijri_iso": "1329-11-01",
+   "gregorian": null
+  },
+  {
+   "year": 1,
+   "no": 3,
+   "no_label": null,
+   "start": 36,
+   "end": 47,
+   "hijri_printed": "۱۵ ذی القعده ۱۳۲۹",
+   "hijri_iso": "1329-11-15",
+   "gregorian": null
+  },
+  {
+   "year": 1,
+   "no": 4,
+   "no_label": null,
+   "start": 48,
+   "end": 59,
+   "hijri_printed": "یکم ذی الحجه ۱۳۲۹",
+   "hijri_iso": "1329-12-01",
+   "gregorian": null
+  },
+  {
+   "year": 1,
+   "no": 5,
+   "no_label": null,
+   "start": 60,
+   "end": 71,
+   "hijri_printed": "۱۵ ذی حجه ۱۳۲۹",
+   "hijri_iso": "1329-12-15",
+   "gregorian": null
+  },
+  {
+   "year": 1,
+   "no": 6,
+   "no_label": null,
+   "start": 72,
+   "end": 83,
+   "hijri_printed": "یکم محرم الحرام ۱۳۳۰",
+   "hijri_iso": "1330-01-01",
+   "gregorian": null
+  },
+  {
+   "year": 1,
+   "no": 7,
+   "no_label": null,
+   "start": 84,
+   "end": 95,
+   "hijri_printed": "۱۵ محرم ۱۳۳۰",
+   "hijri_iso": "1330-01-15",
+   "gregorian": null
+  },
+  {
+   "year": 1,
+   "no": 8,
+   "no_label": null,
+   "start": 96,
+   "end": 107,
+   "hijri_printed": "یکم صفر ۱۳۳۰",
+   "hijri_iso": "1330-02-01",
+   "gregorian": null
+  },
+  {
+   "year": 1,
+   "no": 9,
+   "no_label": null,
+   "start": 108,
+   "end": 119,
+   "hijri_printed": "۱۵ صفر ۱۳۳۰",
+   "hijri_iso": "1330-02-15",
+   "gregorian": null
+  },
+  {
+   "year": 1,
+   "no": 10,
+   "no_label": null,
+   "start": 120,
+   "end": 131,
+   "hijri_printed": "یکم ربیع الاول ۱۳۳۰",
+   "hijri_iso": "1330-03-01",
+   "gregorian": null
+  },
+  {
+   "year": 1,
+   "no": 11,
+   "no_label": null,
+   "start": 132,
+   "end": 143,
+   "hijri_printed": "۱۵ ربیع الاول ۱۳۳۰",
+   "hijri_iso": "1330-03-15",
+   "gregorian": null
+  },
+  {
+   "year": 1,
+   "no": 12,
+   "no_label": null,
+   "start": 144,
+   "end": 159,
+   "hijri_printed": "یکم ربیع الثانی ۱۳۳۰",
+   "hijri_iso": "1330-04-01",
+   "gregorian": null
+  },
+  {
+   "year": 1,
+   "no": 13,
+   "no_label": null,
+   "start": 160,
+   "end": 175,
+   "hijri_printed": "۱۵ ربیع الثانی ۱۳۳۰",
+   "hijri_iso": "1330-04-15",
+   "gregorian": null
+  },
+  {
+   "year": 1,
+   "no": 14,
+   "no_label": null,
+   "start": 176,
+   "end": 191,
+   "hijri_printed": "یکم جمادی الاول ۱۳۳۰",
+   "hijri_iso": "1330-05-01",
+   "gregorian": "1912-04-19"
+  },
+  {
+   "year": 1,
+   "no": 15,
+   "no_label": null,
+   "start": 192,
+   "end": 207,
+   "hijri_printed": "۱۵ جمادی اول ۱۳۳۰",
+   "hijri_iso": "1330-05-15",
+   "gregorian": null
+  },
+  {
+   "year": 1,
+   "no": 16,
+   "no_label": null,
+   "start": 208,
+   "end": 225,
+   "hijri_printed": "یکم جمادی الثانی ۱۳۳۰",
+   "hijri_iso": "1330-06-01",
+   "gregorian": null
+  },
+  {
+   "year": 1,
+   "no": 17,
+   "no_label": null,
+   "start": 226,
+   "end": 241,
+   "hijri_printed": "۱۵ جمادی الثانی ۱۳۳۰",
+   "hijri_iso": "1330-06-15",
+   "gregorian": "1912-06-01"
+  },
+  {
+   "year": 1,
+   "no": 18,
+   "no_label": null,
+   "start": 242,
+   "end": 257,
+   "hijri_printed": "یکم رجب ۱۳۳۰",
+   "hijri_iso": "1330-07-01",
+   "gregorian": "1912-06-17"
+  },
+  {
+   "year": 1,
+   "no": 19,
+   "no_label": null,
+   "start": 258,
+   "end": 273,
+   "hijri_printed": "۱۵ رجب ۱۳۳۰",
+   "hijri_iso": "1330-07-15",
+   "gregorian": "1912-07-01"
+  },
+  {
+   "year": 1,
+   "no": 20,
+   "no_label": null,
+   "start": 274,
+   "end": 289,
+   "hijri_printed": "یکم شعبان ۱۳۳۰",
+   "hijri_iso": "1330-08-01",
+   "gregorian": "1912-07-17"
+  },
+  {
+   "year": 1,
+   "no": 21,
+   "no_label": null,
+   "start": 290,
+   "end": 305,
+   "hijri_printed": "۱۵ شعبان ۱۳۳۰",
+   "hijri_iso": "1330-08-15",
+   "gregorian": "1912-07-30"
+  },
+  {
+   "year": 1,
+   "no": 22,
+   "no_label": null,
+   "start": 306,
+   "end": 321,
+   "hijri_printed": "یکم رمضان ۱۳۳۰",
+   "hijri_iso": "1330-09-01",
+   "gregorian": "1912-08-14"
+  },
+  {
+   "year": 1,
+   "no": 23,
+   "no_label": null,
+   "start": 322,
+   "end": 337,
+   "hijri_printed": "۱۵ رمضان ۱۳۳۰",
+   "hijri_iso": "1330-09-15",
+   "gregorian": "1912-08-28"
+  },
+  {
+   "year": 1,
+   "no": 24,
+   "no_label": null,
+   "start": 338,
+   "end": 369,
+   "hijri_printed": "یکم شوال المکرم ۱۳۳۰",
+   "hijri_iso": "1330-10-01",
+   "gregorian": null
+  },
+  {
+   "year": 2,
+   "no": 1,
+   "no_label": null,
+   "start": 370,
+   "end": 385,
+   "hijri_printed": "۱۵ شوال المکرم ۱۳۳۰",
+   "hijri_iso": "1330-10-15",
+   "gregorian": "1912-09-27"
+  },
+  {
+   "year": 2,
+   "no": 2,
+   "no_label": null,
+   "start": 386,
+   "end": 401,
+   "hijri_printed": "یکم ذی القعده ۱۳۳۰",
+   "hijri_iso": "1330-11-01",
+   "gregorian": "1912-10-13"
+  },
+  {
+   "year": 2,
+   "no": 3,
+   "no_label": null,
+   "start": 402,
+   "end": 417,
+   "hijri_printed": "١٥ ذی القعده ۱۳۳۰",
+   "hijri_iso": "1330-11-15",
+   "gregorian": "1912-10-27"
+  },
+  {
+   "year": 2,
+   "no": 4,
+   "no_label": null,
+   "start": 418,
+   "end": 437,
+   "hijri_printed": "يكم ذي الحجه ۱۳۳۰",
+   "hijri_iso": "1330-12-01",
+   "gregorian": "1912-11-11"
+  },
+  {
+   "year": 2,
+   "no": 5,
+   "no_label": null,
+   "start": 438,
+   "end": 453,
+   "hijri_printed": "١٥ ذی الحجه ۱۳۳۰",
+   "hijri_iso": "1330-12-15",
+   "gregorian": "1912-11-25"
+  },
+  {
+   "year": 2,
+   "no": 6,
+   "no_label": null,
+   "start": 454,
+   "end": 469,
+   "hijri_printed": "یکم محرم ۱۳۳۱",
+   "hijri_iso": "1331-01-01",
+   "gregorian": "1912-12-11"
+  },
+  {
+   "year": 2,
+   "no": 7,
+   "no_label": null,
+   "start": 470,
+   "end": 485,
+   "hijri_printed": "۱۵ محرم ۱۳۳۱",
+   "hijri_iso": "1331-01-15",
+   "gregorian": "1912-12-25"
+  },
+  {
+   "year": 2,
+   "no": 8,
+   "no_label": null,
+   "start": 486,
+   "end": 501,
+   "hijri_printed": "یکم صفر ۱۳۳۱",
+   "hijri_iso": "1331-02-01",
+   "gregorian": "1913-01-09"
+  },
+  {
+   "year": 2,
+   "no": 9,
+   "no_label": null,
+   "start": 502,
+   "end": 517,
+   "hijri_printed": "۱۵ صفر ۱۳۳۱",
+   "hijri_iso": "1331-02-15",
+   "gregorian": "1913-01-23"
+  },
+  {
+   "year": 2,
+   "no": 10,
+   "no_label": null,
+   "start": 518,
+   "end": 533,
+   "hijri_printed": "یکم ربیع الاول ۱۳۳۱",
+   "hijri_iso": "1331-03-01",
+   "gregorian": "1913-02-08"
+  },
+  {
+   "year": 2,
+   "no": 11,
+   "no_label": null,
+   "start": 534,
+   "end": 551,
+   "hijri_printed": "۱۵ ربیع الاول ۱۳۳۱",
+   "hijri_iso": "1331-03-15",
+   "gregorian": "1913-02-22"
+  },
+  {
+   "year": 2,
+   "no": 12,
+   "no_label": null,
+   "start": 552,
+   "end": 569,
+   "hijri_printed": "يكم ربيع الثاني ۱۳۳۱",
+   "hijri_iso": "1331-04-01",
+   "gregorian": "1913-03-10"
+  },
+  {
+   "year": 2,
+   "no": 13,
+   "no_label": null,
+   "start": 570,
+   "end": 589,
+   "hijri_printed": "١٥ ربيع الثانى سنه ١٣٣١",
+   "hijri_iso": "1331-04-15",
+   "gregorian": "1913-03-24"
+  },
+  {
+   "year": 2,
+   "no": 14,
+   "no_label": null,
+   "start": 590,
+   "end": 609,
+   "hijri_printed": "بكم جمادی الاول سنه ۱۳۳۱",
+   "hijri_iso": null,
+   "gregorian": "1913-04-08"
+  },
+  {
+   "year": 2,
+   "no": 15,
+   "no_label": null,
+   "start": 610,
+   "end": 629,
+   "hijri_printed": "١٥ جمادى الاول سنه ١٣٣١",
+   "hijri_iso": "1331-05-15",
+   "gregorian": "1913-04-22"
+  },
+  {
+   "year": 2,
+   "no": 16,
+   "no_label": null,
+   "start": 630,
+   "end": 649,
+   "hijri_printed": "يكم جمادى الثانى سنه ۱۳۳۱",
+   "hijri_iso": "1331-06-01",
+   "gregorian": "1913-05-08"
+  },
+  {
+   "year": 2,
+   "no": 17,
+   "no_label": null,
+   "start": 650,
+   "end": 669,
+   "hijri_printed": "۱۵ جمادی الثانی سنه ۱۳۳۱",
+   "hijri_iso": "1331-06-15",
+   "gregorian": "1913-05-22"
+  },
+  {
+   "year": 2,
+   "no": 18,
+   "no_label": null,
+   "start": 670,
+   "end": 689,
+   "hijri_printed": "يكم رجب سنه ١٣٣١",
+   "hijri_iso": "1331-07-01",
+   "gregorian": null
+  },
+  {
+   "year": 2,
+   "no": 19,
+   "no_label": null,
+   "start": 690,
+   "end": 709,
+   "hijri_printed": "۱۵ رجب سنه ۱۳۳۱",
+   "hijri_iso": "1331-07-15",
+   "gregorian": "1913-06-20"
+  },
+  {
+   "year": 2,
+   "no": 20,
+   "no_label": null,
+   "start": 710,
+   "end": 731,
+   "hijri_printed": "يكم شعبان سنه ۱۳۳۱",
+   "hijri_iso": "1331-08-01",
+   "gregorian": null
+  },
+  {
+   "year": 2,
+   "no": 21,
+   "no_label": null,
+   "start": 732,
+   "end": 753,
+   "hijri_printed": "١٥ شعبان سنه ١٣٣١",
+   "hijri_iso": "1331-08-15",
+   "gregorian": "1913-07-20"
+  },
+  {
+   "year": 2,
+   "no": 22,
+   "no_label": null,
+   "start": 754,
+   "end": 773,
+   "hijri_printed": "يكم رمضان سنه ۱۳۳۱",
+   "hijri_iso": "1331-09-01",
+   "gregorian": "1913-08-04"
+  },
+  {
+   "year": 2,
+   "no": 23,
+   "no_label": null,
+   "start": 774,
+   "end": 793,
+   "hijri_printed": "١٥ رمضان سنه ١٣٣١",
+   "hijri_iso": "1331-09-15",
+   "gregorian": "1913-08-18"
+  },
+  {
+   "year": 2,
+   "no": 24,
+   "no_label": null,
+   "start": 794,
+   "end": 823,
+   "hijri_printed": "يکم شوال سنه ۱۳۳۱",
+   "hijri_iso": "1331-10-01",
+   "gregorian": "1913-09-03"
+  },
+  {
+   "year": 4,
+   "no": 1,
+   "no_label": null,
+   "start": 824,
+   "end": 847,
+   "hijri_printed": "١٥ شوال المكرم سنه ۱۳۳۲",
+   "hijri_iso": "1332-10-15",
+   "gregorian": null
+  },
+  {
+   "year": 4,
+   "no": 2,
+   "no_label": null,
+   "start": 848,
+   "end": 867,
+   "hijri_printed": "یکم ذیقعده سنه ۱۳۳۲",
+   "hijri_iso": "1332-11-01",
+   "gregorian": "1914-09-22"
+  },
+  {
+   "year": 4,
+   "no": 3,
+   "no_label": null,
+   "start": 868,
+   "end": 887,
+   "hijri_printed": "۱۵ ذیقعده سنه ۱۳۳۲",
+   "hijri_iso": "1332-11-15",
+   "gregorian": null
+  },
+  {
+   "year": 4,
+   "no": 4,
+   "no_label": null,
+   "start": 888,
+   "end": 907,
+   "hijri_printed": "غره ذی حجه سنه ۱۳۳۲",
+   "hijri_iso": "1332-12-01",
+   "gregorian": "1914-10-21"
+  },
+  {
+   "year": 4,
+   "no": 5,
+   "no_label": null,
+   "start": 908,
+   "end": 927,
+   "hijri_printed": "١٥ ذی الحجه سنه ۱۳۳۲",
+   "hijri_iso": "1332-12-15",
+   "gregorian": "1914-11-04"
+  },
+  {
+   "year": 4,
+   "no": 6,
+   "no_label": null,
+   "start": 928,
+   "end": 947,
+   "hijri_printed": "یکم محرم سنه ۱۳۲۳",
+   "hijri_iso": "1323-01-01",
+   "gregorian": null
+  },
+  {
+   "year": 4,
+   "no": 7,
+   "no_label": null,
+   "start": 948,
+   "end": 967,
+   "hijri_printed": "۱۵ محرم سنه ۱۳۲۳",
+   "hijri_iso": "1323-01-15",
+   "gregorian": null
+  },
+  {
+   "year": 4,
+   "no": 8,
+   "no_label": null,
+   "start": 968,
+   "end": 987,
+   "hijri_printed": "۱۳۲۹",
+   "hijri_iso": null,
+   "gregorian": null
+  },
+  {
+   "year": 4,
+   "no": 9,
+   "no_label": null,
+   "start": 988,
+   "end": 1007,
+   "hijri_printed": "۱۵ صفر سنه ۱۳۳۳",
+   "hijri_iso": "1333-02-15",
+   "gregorian": "1915-01-02"
+  },
+  {
+   "year": 4,
+   "no": 10,
+   "no_label": null,
+   "start": 1008,
+   "end": 1027,
+   "hijri_printed": "غرة ربيع الاول سنه ۱۳۳۳",
+   "hijri_iso": "1333-03-01",
+   "gregorian": "1915-01-17"
+  },
+  {
+   "year": 4,
+   "no": 11,
+   "no_label": null,
+   "start": 1028,
+   "end": 1047,
+   "hijri_printed": "۱۰ ربیع الاول سنه ۱۳۳۳",
+   "hijri_iso": "1333-03-10",
+   "gregorian": null
+  },
+  {
+   "year": 4,
+   "no": 12,
+   "no_label": null,
+   "start": 1048,
+   "end": 1067,
+   "hijri_printed": "غره ربيع الثانى سنه ۱۳۳۳",
+   "hijri_iso": "1333-04-01",
+   "gregorian": "1915-02-16"
+  },
+  {
+   "year": 4,
+   "no": 13,
+   "no_label": null,
+   "start": 1068,
+   "end": 1087,
+   "hijri_printed": "۱۰ ربيع الثاني سنه ۱۳۳۳",
+   "hijri_iso": "1333-04-10",
+   "gregorian": null
+  },
+  {
+   "year": 4,
+   "no": 14,
+   "no_label": null,
+   "start": 1088,
+   "end": 1107,
+   "hijri_printed": "بكم جمادى الأول ۱۳۲۳",
+   "hijri_iso": null,
+   "gregorian": null
+  },
+  {
+   "year": 4,
+   "no": 15,
+   "no_label": null,
+   "start": 1108,
+   "end": 1127,
+   "hijri_printed": "١٥ جمادى الأول ١٣٣٣",
+   "hijri_iso": "1333-05-15",
+   "gregorian": "1915-03-31"
+  },
+  {
+   "year": 4,
+   "no": 16,
+   "no_label": null,
+   "start": 1128,
+   "end": 1147,
+   "hijri_printed": "یکم جمادی الثانی ۱۳۳۳",
+   "hijri_iso": "1333-06-01",
+   "gregorian": "1915-04-16"
+  },
+  {
+   "year": 4,
+   "no": 17,
+   "no_label": null,
+   "start": 1148,
+   "end": 1167,
+   "hijri_printed": "۱۵ جمادی الثانی ۱۳۳۳",
+   "hijri_iso": "1333-06-15",
+   "gregorian": "1915-04-30"
+  },
+  {
+   "year": 4,
+   "no": 18,
+   "no_label": null,
+   "start": 1168,
+   "end": 1187,
+   "hijri_printed": "یکم رجب ۱۳۳۳",
+   "hijri_iso": "1333-07-01",
+   "gregorian": null
+  },
+  {
+   "year": 4,
+   "no": 19,
+   "no_label": null,
+   "start": 1188,
+   "end": 1207,
+   "hijri_printed": "۱۵ رجب ۱۳۳۳",
+   "hijri_iso": "1333-07-15",
+   "gregorian": "1915-05-30"
+  },
+  {
+   "year": 4,
+   "no": 20,
+   "no_label": null,
+   "start": 1208,
+   "end": 1227,
+   "hijri_printed": "یکم شعبان ۱۳۳۳",
+   "hijri_iso": "1333-08-01",
+   "gregorian": "1915-06-14"
+  },
+  {
+   "year": 4,
+   "no": 21,
+   "no_label": null,
+   "start": 1228,
+   "end": 1247,
+   "hijri_printed": "۱۵ شعبان ۱۳۳۳",
+   "hijri_iso": "1333-08-15",
+   "gregorian": "1915-06-28"
+  },
+  {
+   "year": 4,
+   "no": 22,
+   "no_label": null,
+   "start": 1248,
+   "end": 1267,
+   "hijri_printed": "يكم رمضان ۱۳۳۳",
+   "hijri_iso": "1333-09-01",
+   "gregorian": "1915-07-14"
+  },
+  {
+   "year": 4,
+   "no": 23,
+   "no_label": null,
+   "start": 1268,
+   "end": 1287,
+   "hijri_printed": "۱۵ رمضان ۱۳۳۳",
+   "hijri_iso": "1333-09-15",
+   "gregorian": "1915-07-28"
+  },
+  {
+   "year": 4,
+   "no": 24,
+   "no_label": null,
+   "start": 1288,
+   "end": 1319,
+   "hijri_printed": "يكم شوال ۱۳۳۳",
+   "hijri_iso": "1333-10-01",
+   "gregorian": "1915-08-13"
+  },
+  {
+   "year": 5,
+   "no": 1,
+   "no_label": null,
+   "start": 1320,
+   "end": 1339,
+   "hijri_printed": "۱۵ شوال ۱۳۳۳",
+   "hijri_iso": "1333-10-15",
+   "gregorian": "1915-08-27"
+  },
+  {
+   "year": 5,
+   "no": 2,
+   "no_label": null,
+   "start": 1340,
+   "end": 1359,
+   "hijri_printed": "یکم نیقیه، ۱۳۳۳",
+   "hijri_iso": null,
+   "gregorian": null
+  },
+  {
+   "year": 5,
+   "no": 3,
+   "no_label": null,
+   "start": 1360,
+   "end": 1379,
+   "hijri_printed": "۱۵ ذیقعده ۱۳۳۳",
+   "hijri_iso": "1333-11-15",
+   "gregorian": null
+  },
+  {
+   "year": 5,
+   "no": 4,
+   "no_label": null,
+   "start": 1380,
+   "end": 1395,
+   "hijri_printed": "يكم ذى الحجه ١٣٣٣",
+   "hijri_iso": "1333-12-01",
+   "gregorian": "1915-10-11"
+  },
+  {
+   "year": 5,
+   "no": 5,
+   "no_label": null,
+   "start": 1396,
+   "end": 1415,
+   "hijri_printed": null,
+   "hijri_iso": null,
+   "gregorian": null
+  },
+  {
+   "year": 5,
+   "no": 6,
+   "no_label": null,
+   "start": 1416,
+   "end": 1435,
+   "hijri_printed": "يكم محرم ١٣٣٤",
+   "hijri_iso": "1334-01-01",
+   "gregorian": "1915-11-09"
+  },
+  {
+   "year": 5,
+   "no": 7,
+   "no_label": null,
+   "start": 1436,
+   "end": 1455,
+   "hijri_printed": "١٥ محرم ١٣٣٤",
+   "hijri_iso": "1334-01-15",
+   "gregorian": null
+  },
+  {
+   "year": 5,
+   "no": 8,
+   "no_label": null,
+   "start": 1456,
+   "end": 1475,
+   "hijri_printed": "غرة شهر صفر ١٣٣٤",
+   "hijri_iso": "1334-02-01",
+   "gregorian": "1915-12-09"
+  },
+  {
+   "year": 5,
+   "no": 9,
+   "no_label": null,
+   "start": 1476,
+   "end": 1495,
+   "hijri_printed": "١٥ صفر ١٣٣٤",
+   "hijri_iso": "1334-02-15",
+   "gregorian": "1915-12-23"
+  },
+  {
+   "year": 5,
+   "no": 10,
+   "no_label": null,
+   "start": 1496,
+   "end": 1515,
+   "hijri_printed": "ضره ربیع الاول ١٣٣٤",
+   "hijri_iso": null,
+   "gregorian": "1916-01-07"
+  },
+  {
+   "year": 5,
+   "no": 11,
+   "no_label": null,
+   "start": 1516,
+   "end": 1535,
+   "hijri_printed": "غره ربيع الثاني ١٣٣٤",
+   "hijri_iso": "1334-04-01",
+   "gregorian": "1916-02-05"
+  },
+  {
+   "year": 5,
+   "no": 12,
+   "no_label": null,
+   "start": 1536,
+   "end": 1555,
+   "hijri_printed": "١٥ ربيع الثانی ١٣٣٤",
+   "hijri_iso": "1334-04-15",
+   "gregorian": null
+  },
+  {
+   "year": 5,
+   "no": 13,
+   "no_label": null,
+   "start": 1556,
+   "end": 1575,
+   "hijri_printed": "غره جمادى الأول ١٣٣٤",
+   "hijri_iso": "1334-05-01",
+   "gregorian": null
+  },
+  {
+   "year": 5,
+   "no": 14,
+   "no_label": null,
+   "start": 1576,
+   "end": 1595,
+   "hijri_printed": "١٥ جمادى الاول ١٣٣٤",
+   "hijri_iso": "1334-05-15",
+   "gregorian": "1916-03-20"
+  },
+  {
+   "year": 5,
+   "no": 15,
+   "no_label": null,
+   "start": 1596,
+   "end": 1615,
+   "hijri_printed": "جمادى الثانى ١٣٣٤",
+   "hijri_iso": null,
+   "gregorian": "1916-04-04"
+  },
+  {
+   "year": 5,
+   "no": 16,
+   "no_label": null,
+   "start": 1616,
+   "end": 1635,
+   "hijri_printed": "١٥ جمادى الثانى ١٣٣٤",
+   "hijri_iso": "1334-06-15",
+   "gregorian": "1916-04-18"
+  },
+  {
+   "year": 5,
+   "no": 17,
+   "no_label": null,
+   "start": 1636,
+   "end": 1655,
+   "hijri_printed": "عربی رجب ١٣٣٤",
+   "hijri_iso": null,
+   "gregorian": null
+  },
+  {
+   "year": 5,
+   "no": 18,
+   "no_label": null,
+   "start": 1656,
+   "end": 1675,
+   "hijri_printed": "۱۵ رجب ۱۳۳۴",
+   "hijri_iso": "1334-07-15",
+   "gregorian": "1916-05-18"
+  },
+  {
+   "year": 5,
+   "no": 19,
+   "no_label": null,
+   "start": 1676,
+   "end": 1695,
+   "hijri_printed": "غره شعبان ١٣٣٤",
+   "hijri_iso": "1334-08-01",
+   "gregorian": "1916-06-03"
+  },
+  {
+   "year": 5,
+   "no": 20,
+   "no_label": null,
+   "start": 1696,
+   "end": 1715,
+   "hijri_printed": "۱۵ شعبان ۱۳۳۴",
+   "hijri_iso": "1334-08-15",
+   "gregorian": "1916-06-17"
+  },
+  {
+   "year": 5,
+   "no": 21,
+   "no_label": null,
+   "start": 1716,
+   "end": 1735,
+   "hijri_printed": "یکم رمضان ١٣٣٤",
+   "hijri_iso": "1334-09-01",
+   "gregorian": "1916-07-02"
+  },
+  {
+   "year": 5,
+   "no": 22,
+   "no_label": null,
+   "start": 1736,
+   "end": 1755,
+   "hijri_printed": "۱۵ رمضان ۱۳۳۴",
+   "hijri_iso": "1334-09-15",
+   "gregorian": null
+  },
+  {
+   "year": 5,
+   "no": 23,
+   "no_label": "23–24",
+   "start": 1756,
+   "end": 1787,
+   "hijri_printed": "غره شوال ١٣٣٤",
+   "hijri_iso": "1334-10-01",
+   "gregorian": "1916-08-01"
+  }
+ ]
+}

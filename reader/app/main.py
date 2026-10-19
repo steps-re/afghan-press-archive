@@ -53,7 +53,10 @@ app = FastAPI(title="Afghan Press Archive", docs_url="/api/docs")
 from fastapi.middleware.cors import CORSMiddleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origin_regex=r"https://(afghanpress\.org|www\.afghanpress\.org|afghan-press-[a-z]+-[0-9]+\.us-central1\.run\.app)|http://localhost(:[0-9]+)?",
+    # Cloud Run serves each service on BOTH url forms, and the one we hand out is the hashed
+    # "-akg7hqsy5q-uc.a.run.app" form. Only the numeric form was allowed, so every fetch from the
+    # design studies was blocked and clicking a page there did nothing (reported 2026-10-18).
+    allow_origin_regex=r"https://(afghanpress\.org|www\.afghanpress\.org|afghan-press-[a-z]+-[0-9]+\.us-central1\.run\.app|afghan-press-[a-z]+-[a-z0-9]+-uc\.a\.run\.app)|http://localhost(:[0-9]+)?",
     allow_methods=["GET", "POST"], allow_headers=["*"])
 
 
@@ -878,6 +881,15 @@ def html_browse(decade: Optional[int] = None, subject: Optional[str] = None):
     if subject:
         return RedirectResponse(f"/browse/subject/{_slug(subject)}", status_code=301)
     return HTMLResponse(render.browse_page(_facet_view(), BASE_URL))
+
+
+@app.get("/browse/periodicals")
+def html_browse_periodicals():
+    f = _facet_view()
+    keep = {t["book"] for t in f["periodicals"]}
+    f = dict(f, titles=[t for t in f["titles"] if t["book"] in keep])
+    return HTMLResponse(render.browse_page(f, BASE_URL, heading="Newspapers and periodicals",
+                                           crumb="Newspapers and periodicals"))
 
 
 @app.get("/browse/decade/{decade}")

@@ -143,6 +143,10 @@ def dublin_core(bid: str, pages: int = 0) -> dict:
     }
 
 
+def is_periodical(bid: str) -> bool:
+    return any(re.search(r"--\s*(Periodicals|Newspapers)\s*$", s) for s in subjects(bid))
+
+
 def facets(counts: dict) -> dict:
     """Browse dimensions over the whole corpus. `counts` maps book id -> page count.
 
@@ -167,7 +171,13 @@ def facets(counts: dict) -> dict:
                          "original": parts["original"], "pages": n,
                          "year_start": dates(bid)[0], "year_end": dates(bid)[1]})
     by_title.sort(key=lambda r: (r["romanized"] or "￿").lower())
+    # A scholar arrives looking for a SOURCE ("Siraj al-akhbar"), not a decade or a subject, and
+    # the newspapers were buried among 580 alphabetised books. Which volumes are serials comes
+    # from NYU's own LCSH form subdivision, not from guessing at titles.
+    periodicals = sorted((t for t in by_title if is_periodical(t["book"])),
+                         key=lambda r: (r["year_start"] or 9999, r["romanized"].lower()))
     return {
+        "periodicals": periodicals,
         "decades": sorted(decades.values(), key=lambda r: r["decade"]),
         "subjects": sorted(subj.values(), key=lambda r: -r["pages"]),
         "titles": by_title,

@@ -357,6 +357,11 @@ def browse_page(facets: dict, base: str, heading: str = "", crumb: str = "") -> 
         f'<span lang="fa" dir="rtl" style="font-family:var(--arabic)">{escape(t["original"])}</span> — '
         f'{t["pages"]:,} pages{" · " + str(t["year_start"]) if t["year_start"] else ""}</li>'
         for t in facets["titles"])
+    per = "".join(
+        f'<li><a href="/book/{t["book"]}">{escape(t["romanized"] or t["book"])}</a> '
+        f'<span lang="fa" dir="rtl" style="font-family:var(--arabic)">{escape(t["original"])}</span> — '
+        f'{t["pages"]:,} pages{" · " + str(t["year_start"]) if t["year_start"] else ""}</li>'
+        for t in facets.get("periodicals", []))
     crumbs = ('<a href="/">Afghan Press Archive</a> → <a href="/browse">Browse</a> → '
               + escape(crumb)) if crumb else '<a href="/">Afghan Press Archive</a> → Browse'
     n = len(facets["titles"])
@@ -370,6 +375,7 @@ Afghanistan Digital Library's own catalogue.</p>
 <hr class="rule">
 </header>
 <main id="main">
+{"" if heading else f'<h2 id="periodicals">Newspapers and periodicals</h2><p>In order of first issue. Each title opens on its own page, with every page of the run.</p><ul class="plain">{per}</ul>'}
 <h2>By decade</h2><ul class="plain">{dec}</ul>
 <h2>By subject</h2><ul class="plain">{subj}</ul>
 <h2>{'Volumes' if heading else 'All volumes'}</h2><ul class="plain">{titles}</ul>
@@ -377,7 +383,7 @@ Afghanistan Digital Library's own catalogue.</p>
     t = f"{heading} — Afghan Press Archive" if heading else "Browse — Afghan Press Archive"
     d = (f"{heading}: {n} volumes, {npages:,} pages of Afghan print, machine-transcribed and "
          f"searchable." if heading else
-         "Browse 580 volumes of Afghan periodicals by decade, subject and title.")
+         "Browse 580 volumes of Afghan print by newspaper, decade, subject and title.")
     return shell(t, body, desc=d)
 
 

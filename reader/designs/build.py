@@ -11,17 +11,17 @@ several routes through Afghan and period-appropriate visual traditions in betwee
 import json, os
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-SAMPLE = json.load(open("/tmp/sample.json", encoding="utf-8"))
+SAMPLE = json.load(open(os.environ.get("ADL_SAMPLE", "/tmp/sample.json"), encoding="utf-8"))
 ARABIC_FONT = """@font-face{font-family:Amiri;src:url(/fonts/amiri-arabic.woff2) format('woff2');
  unicode-range:U+0600-06FF,U+0750-077F,U+08A0-08FF,U+FB50-FDFF,U+FE70-FEFC;font-display:swap}"""
 
 AR_TITLE = "آرشیو مطبوعات افغانستان"
 EN_TITLE = "Afghan Press Archive"
-BLURB = "69,624 pages · 579 volumes · Kabul and elsewhere, 1871–1930s"
+BLURB = "69,624 pages · 580 volumes · Kabul and elsewhere, 1873–1960s"
 CREDIT = "Scans by New York University Libraries · text machine-read, unverified"
 # Farsi chrome. The readership for this archive largely reads Persian/Dari, so every study
 # has to survive being mirrored -- a design that only works left-to-right is only half a design.
-BLURB_FA = "۶۹٬۶۲۴ صفحه · ۵۷۹ جلد · کابل و جاهای دیگر، ۱۸۷۱ تا دههٔ ۱۹۳۰"
+BLURB_FA = "۶۹٬۶۲۴ صفحه · ۵۸۰ جلد · کابل و جاهای دیگر، ۱۸۷۳ تا دههٔ ۱۹۶۰"
 CREDIT_FA = "تصاویر از کتابخانه‌های دانشگاه نیویورک · متن ماشین‌خوان و تأییدنشده"
 EN_TITLE_FA = "آرشیو مطبوعات افغانستان"
 
@@ -250,7 +250,7 @@ DESIGNS = [d for d in DESIGNS if d[0] in KEEP]
 
 PAGE = """<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{n}. {name} — Afghan Press Archive design study</title>
+<title>{n}. {name} — Afghan Press Archive design mockup</title>
 <style>{font}
 *{{box-sizing:border-box}}
 {css}
@@ -271,8 +271,8 @@ body{{padding-top:34px}}
 html[dir=rtl] .hit{{direction:rtl}}
 html[dir=rtl] .cols{{direction:rtl}}
 </style></head><body>
-<div class="bar"><b>{n} / {total} · {name}</b><span>{tag}</span>
- <span style="flex:1"></span><button id="lang">فارسی</button><a href="/">all</a>{prev}{next}</div>
+<div class="bar"><b>Design mockup {n} / {total} · {name}</b><span>A visual style, not a section of the collection.</span>
+ <span style="flex:1"></span><a href="https://afghanpress.org/browse"><b>Go to the library →</b></a><button id="lang">فارسی</button><a href="/">all mockups</a>{prev}{next}</div>
 <div class="wrap">
 <header>{orn}
   <div class="{platecls}">
@@ -354,7 +354,7 @@ for i, (slug, name, tag, css) in enumerate(DESIGNS, 1):
 
 INDEX = """<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Afghan Press Archive — design studies</title>
+<title>Afghan Press Archive — design mockups</title>
 <style>%s
 *{box-sizing:border-box}
 body{background:#faf6ec;color:#23201a;font:17px/1.6 'Iowan Old Style',Palatino,Georgia,serif;margin:0}
@@ -370,31 +370,24 @@ h1{font-family:Amiri,serif;direction:rtl;font-size:44px;margin:0}
 .num{font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:#7c3b2e}
 .name{font-size:21px;margin:7px 0 8px}
 .tag{font-size:14px;color:#6f6757;line-height:1.5}
+.notice{margin:28px 0 0;padding:16px 20px;border:2px solid #1f3a6e;background:#fff;font-size:17px}
+.notice p{margin:6px 0}.notice p[dir=rtl]{font-family:Amiri,serif;font-size:20px}
+.notice a{color:#1f3a6e}
 </style></head><body><div class="wrap">
-<header><h1>آرشیو مطبوعات افغانستان</h1><p class="en">Design studies</p>
-<p class="lede">The same archive rendered several ways. Each one is a working interface over the
-live collection rather than a mock-up: search it, open a page, page through the scan, switch the
-interface to Persian. Nothing here is filler text.</p>
+<div class="notice"><p><b>Looking for the library?</b> It is at
+<a href="https://afghanpress.org">afghanpress.org</a>. Browse by newspaper, including
+<a href="https://afghanpress.org/book/adl0616">Sirāj al-akhbār</a>, on the
+<a href="https://afghanpress.org/browse#periodicals">Browse page</a>.</p>
+<p lang="fa" dir="rtl">کتابخانه در <a href="https://afghanpress.org">afghanpress.org</a> است. فهرست روزنامه‌ها، از جمله
+<a href="https://afghanpress.org/book/adl0616">سراج الاخبار</a>، در
+<a href="https://afghanpress.org/browse#periodicals">صفحهٔ فهرست</a> آمده است.</p></div>
+<header><h1>آرشیو مطبوعات افغانستان</h1><p class="en">Design mockups</p>
+<p class="lede">These pages are early visual mockups for the site, made in August 2026 to choose a
+look. Each name (Swiss, Modern Afghan, and so on) is a visual style, not a part of the collection.
+Every mockup shows the same three sample pages. The chosen style is now live at afghanpress.org.</p>
 <div class="rules"></div></header>
 <div class="grid">%s</div>
 </div>
-<script src="/app.js"></script>
-<script>
-var L=localStorage.getItem('adl_lang')||'en';
-function apply(){
-  var fa=L==='fa';
-  document.documentElement.dir=fa?'rtl':'ltr';
-  document.documentElement.lang=fa?'fa':'en';
-  document.querySelectorAll('[data-en]').forEach(function(el){
-    el.textContent = fa ? el.dataset.fa : el.dataset.en;
-  });
-  document.getElementById('lang').textContent = fa ? 'English' : 'فارسی';
-}
-document.getElementById('lang').onclick=function(){
-  L = L==='fa' ? 'en' : 'fa'; localStorage.setItem('adl_lang',L); apply();
-};
-apply();
-</script>
 </body></html>""" % (ARABIC_FONT, "\n".join(
     f'<a class="card" href="/{s}.html"><div class="num">{i:02d}</div>'
     f'<div class="name">{n}</div><div class="tag">{t}</div></a>' for i, s, n, t in cards))

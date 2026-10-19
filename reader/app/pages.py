@@ -50,6 +50,11 @@ font-weight:700;margin:0 0 10px}
 margin:20px 0}
 .pager{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin:26px 0;font-size:15px}
 .pager .sp{flex:1}
+.booktools{display:flex;gap:28px;flex-wrap:wrap;margin:22px 0;font-size:15px}
+.booktools form{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.booktools input{font:inherit;padding:5px 8px;border:1px solid currentColor;background:#fff;max-width:100%}
+.booktools input[type=number]{width:6.5em}
+.booktools button{font:inherit;padding:5px 12px;border:1px solid currentColor;background:transparent;cursor:pointer}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(158px,1fr));gap:16px;margin:22px 0}
 .grid a{display:block;border-bottom:0;font-size:13px;color:var(--soft)}
 .grid img{width:100%;height:auto;border:1px solid var(--rule);background:#fff;display:block}
@@ -119,7 +124,14 @@ def coins(rec: dict, title: str, date: str, url: str, page=None) -> str:
 
 
 def shell(title: str, body: str, desc: str = "", jsonld: str = "", lang: str = "en",
-          head_extra: str = "") -> str:
+          head_extra: str = "", canonical: str = "") -> str:
+    # Every page is reachable on more than one hostname (the apex, www, and the raw run.app URL
+    # the deploy check hits), so a page with no canonical is a page Google has to guess about.
+    # It guessed wrong: the Search Console alert of 2026-08-19 was "duplicate without
+    # user-selected canonical" over the browse and places trees, which were the only HTML here
+    # that shell() emitted without one. Book and reader pages carry theirs in head_extra via
+    # dublin_core_meta, so this stays empty for them rather than emitting a second tag.
+    can = f'<link rel="canonical" href="{escape(canonical)}">\n' if canonical else ""
     return f"""<!doctype html>
 <html lang="{lang}">
 <head>
@@ -127,7 +139,7 @@ def shell(title: str, body: str, desc: str = "", jsonld: str = "", lang: str = "
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{escape(title)}</title>
 <meta name="description" content="{escape(desc)}">
-{head_extra}
+{can}{head_extra}
 <style>{CSS}</style>
 {jsonld}
 </head>
@@ -181,7 +193,8 @@ def _meta_rows(rec, cat_mod, book):
     return "".join(rows)
 
 
-def book_page(book: str, pages: list, cat_mod, prov_mod, base: str, img_base: str) -> str:
+def book_page(book: str, pages: list, cat_mod, prov_mod, base: str, img_base: str,
+              start: int = 0) -> str:
     rec = cat_mod.book(book)
     parts = cat_mod.title_parts(book)
     lo, hi = cat_mod.dates(book)
@@ -201,12 +214,30 @@ def book_page(book: str, pages: list, cat_mod, prov_mod, base: str, img_base: st
 "sourceOrganization":{{"@type":"Organization","name":"New York University Libraries"}}
 }}</script>"""
 
+    # 60 thumbnails a screen, paged with ?from=, so every page of a long run is reachable by
+    # browsing. Before this only the first 60 of Sirāj al-akhbār's 1,787 pages were shown.
+    STEP = 60
+    start = min(start - start % STEP, max(0, (n - 1) // STEP * STEP))
+    shown = pages[start:start + STEP]
     thumbs = "".join(
         f'<a href="/book/{book}/{p}"><img loading="lazy" src="{img_base}/{book}/{p:05d}.jpg" '
         f'alt="Page {p} of {escape(title)}"><span>{p}</span></a>'
-        for p in pages[:60])
-    more = (f'<p class="note">Showing the first 60 of {n} pages. '
-            f'<a href="/book/{book}/{pages[0]}">Start reading</a>.</p>' if n > 60 else "")
+        for p in shown)
+    more = ""
+    if n > STEP:
+        prv = (f'<a href="/book/{book}?from={start - STEP}" rel="prev">← Previous {STEP}</a>'
+               if start else "<span></span>")
+        nxt = (f'<a href="/book/{book}?from={start + STEP}" rel="next">Next {STEP} →</a>'
+               if start + STEP < n else "<span></span>")
+        more = (f'<nav class="pager" aria-label="Thumbnail pages">{prv}<span class="sp"></span>'
+                f'<span>Pages {shown[0]}–{shown[-1]} of {n}</span><span class="sp"></span>{nxt}</nav>')
+    tools = f"""<div class="booktools">
+<form action="/" method="get" role="search"><input type="hidden" name="book" value="{escape(book)}">
+<label>Search this volume <input name="q" type="search" dir="auto" required minlength="2"></label>
+<button>Search</button></form>
+<form action="/book/{escape(book)}" method="get">
+<label>Go to page <input name="page" type="number" min="{pages[0]}" max="{pages[-1]}" required></label>
+<button>Go</button></form></div>"""
 
     # A volume with no bibliographic record still has to read as a real thing rather than a
     # bare identifier. adl0277 is the live case: the ADL serves an empty page for its record,
@@ -242,8 +273,10 @@ def book_page(book: str, pages: list, cat_mod, prov_mod, base: str, img_base: st
 </dd>
 </dl>
 <p class="note">{escape(prov_mod.ACCURACY['headline'])}</p>
+{tools}
 {more}
 <div class="grid">{thumbs}</div>
+{more}
 </main>"""
     url = f"{base}/book/{book}"
     head = dublin_core_meta(rec, title, date, url) + f"""
@@ -341,11 +374,12 @@ Library record</a></dd>
 
 
 def _slug(s: str) -> str:
-    import re
-    return re.sub(r"[^a-z0-9]+", "-", s.lower()).strip("-")
+    from .catalog import slug
+    return slug(s)
 
 
-def browse_page(facets: dict, base: str, heading: str = "", crumb: str = "") -> str:
+def browse_page(facets: dict, base: str, heading: str = "", crumb: str = "",
+                path: str = "/browse") -> str:
     dec = "".join(
         f'<li><a href="/browse/decade/{d["decade"]}">{d["decade"]}s</a> — '
         f'{d["books"]} volumes, {d["pages"]:,} pages</li>' for d in facets["decades"])
@@ -375,16 +409,16 @@ Afghanistan Digital Library's own catalogue.</p>
 <hr class="rule">
 </header>
 <main id="main">
-{"" if heading else f'<h2 id="periodicals">Newspapers and periodicals</h2><p>In order of first issue. Each title opens on its own page, with every page of the run.</p><ul class="plain">{per}</ul>'}
-<h2>By decade</h2><ul class="plain">{dec}</ul>
-<h2>By subject</h2><ul class="plain">{subj}</ul>
+{"" if heading else f'<h2 id="periodicals">Newspapers and periodicals</h2><p>In order of first issue. Most runs here are incomplete: the page count is what NYU holds, not the whole paper. <a href="/browse/periodicals">These titles alone</a>.</p><ul class="plain">{per}</ul>'}
+{f'<h2>By decade</h2><ul class="plain">{dec}</ul>' if dec else '<p>Most runs here are incomplete: the page count is what NYU holds, not the whole paper.</p>'}
+{f'<h2>By subject</h2><ul class="plain">{subj}</ul>' if subj else ''}
 <h2>{'Volumes' if heading else 'All volumes'}</h2><ul class="plain">{titles}</ul>
 </main>"""
     t = f"{heading} — Afghan Press Archive" if heading else "Browse — Afghan Press Archive"
     d = (f"{heading}: {n} volumes, {npages:,} pages of Afghan print, machine-transcribed and "
          f"searchable." if heading else
          "Browse 580 volumes of Afghan print by newspaper, decade, subject and title.")
-    return shell(t, body, desc=d)
+    return shell(t, body, desc=d, canonical=base + path)
 
 
 def places_page(places: list, meta: dict, base: str) -> str:
@@ -407,7 +441,8 @@ occur on more than 2% of pages are dropped as ordinary Persian words rather than
 <ul class="plain">{rows}</ul>
 </main>"""
     return shell("Places — Afghan Press Archive", body,
-                 desc="Browse Afghan and regional place names found in the corpus.")
+                 desc="Browse Afghan and regional place names found in the corpus.",
+                 canonical=base + "/places")
 
 
 def place_page(place: dict, cat_mod, base: str) -> str:
@@ -431,7 +466,8 @@ def place_page(place: dict, cat_mod, base: str) -> str:
 <ul class="plain">{hits}</ul>
 </main>"""
     return shell(f"{place['name']} — Afghan Press Archive", body,
-                 desc=f"Pages naming {place['name']} in the Afghan press corpus.")
+                 desc=f"Pages naming {place['name']} in the Afghan press corpus.",
+                 canonical=f"{base}/places/{place['id']}")
 
 
 def error_page(code: int, detail: str) -> str:

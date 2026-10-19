@@ -24,12 +24,14 @@ Design constraints that come straight from the measurements (see ../../RESULTS.m
 """
 import json, os, re, sqlite3, threading, time, unicodedata
 from typing import Optional
+from urllib.parse import urlsplit
 
 import numpy as np
 from fastapi import Body, Depends, FastAPI, HTTPException, Header, Query
 from fastapi.responses import (FileResponse, HTMLResponse, JSONResponse, RedirectResponse,
                                Response,
                                StreamingResponse)
+from fastapi.routing import APIRoute
 from fastapi.staticfiles import StaticFiles
 
 from . import catalog, exports, iiif, oai, pages as render, provenance
@@ -56,8 +58,31 @@ app.add_middleware(
     # Cloud Run serves each service on BOTH url forms, and the one we hand out is the hashed
     # "-akg7hqsy5q-uc.a.run.app" form. Only the numeric form was allowed, so every fetch from the
     # design studies was blocked and clicking a page there did nothing (reported 2026-10-18).
-    allow_origin_regex=r"https://(afghanpress\.org|www\.afghanpress\.org|afghan-press-[a-z]+-[0-9]+\.us-central1\.run\.app|afghan-press-[a-z]+-[a-z0-9]+-uc\.a\.run\.app)|http://localhost(:[0-9]+)?",
+    # Both forms are pinned to THIS project's number and hash: a bare "afghan-press-*" pattern
+    # would admit a service of that name in anyone's project.
+    allow_origin_regex=r"https://(afghanpress\.org|www\.afghanpress\.org|afghan-press-[a-z]+-523703907107\.us-central1\.run\.app|afghan-press-[a-z]+-akg7hqsy5q-uc\.a\.run\.app)|http://localhost(:[0-9]+)?",
     allow_methods=["GET", "POST"], allow_headers=["*"])
+
+# www and the apex are two Cloud Run domain mappings onto this one service, so before this
+# every page existed twice, byte for byte, on two hostnames. Google reported it on 2026-08-19
+# as "duplicate without user-selected canonical". Redirecting is better than relying on the
+# canonical tag alone: a tag is a hint a crawler may overrule, a 301 is not, and it also
+# collapses the two hosts for anyone linking or citing.
+#
+# Only the www form of the canonical host is redirected. The *.run.app URL has to keep serving
+# directly, because the deploy check hits it first -- the custom domain lags a revision behind
+# for a minute or two after every deploy, so a redirect here would make the new revision
+# unverifiable at exactly the moment it needs verifying.
+CANONICAL_HOST = urlsplit(BASE_URL).netloc
+
+
+@app.middleware("http")
+async def canonical_host(request, call_next):
+    host = (request.headers.get("host") or "").split(":")[0].lower()
+    if CANONICAL_HOST and host == "www." + CANONICAL_HOST:
+        q = f"?{request.url.query}" if request.url.query else ""
+        return RedirectResponse(f"{BASE_URL}{request.url.path}{q}", status_code=301)
+    return await call_next(request)
 
 
 
@@ -350,7 +375,9 @@ def api_search(q: str = Query(..., min_length=2), limit: int = Query(20, le=100)
             raws[(r["book"], r["page"])] = r["raw"]
     return {"query": q, "mode": mode, "ms": int((time.time() - t0) * 1000),
             "semantic_available": sem_ok,
+            "sources": [] if book else catalog.match_titles(q),
             "results": [{"book": b, "page": p,
+                         "title": catalog.title_parts(b)["romanized"] or catalog.label(b),
                          "snippet": snippet(raws.get((b, p), ""), q),
                          "image": f"{IMG_BASE}/{b}/{p:05d}.jpg"} for b, p in order]}
 
@@ -722,12 +749,39 @@ def iiif_manifest(book: str):
                         media_type="application/ld+json")
 
 
+def _page_exists(book: str, page: int) -> bool:
+    return db().execute("SELECT 1 FROM pages WHERE book=? AND page=?",
+                        (book, page)).fetchone() is not None
+
+
 @app.get("/iiif/{book}/canvas/{page}")
 def iiif_canvas(book: str, page: int):
     """A canvas URI has to resolve to something -- a viewer following a search hit will
     dereference it. Redirect to the page it names rather than 404."""
     from fastapi.responses import RedirectResponse
     return RedirectResponse(f"/book/{book}/{page}", status_code=302)
+
+
+@app.get("/iiif/{book}/canvas/{page}/page")
+def iiif_canvas_painting(book: str, page: int):
+    """The painting AnnotationPage. Embedded in the manifest, so the spec does not oblige this
+    to resolve, but viewers dereference it anyway and were getting a 404 -- 2026-08-19 logs show
+    steady traffic on this URI and on the /page/image one below."""
+    if not _page_exists(book, page):
+        raise HTTPException(404, "page not found")
+    return JSONResponse({"@context": "http://iiif.io/api/presentation/3/context.json",
+                         **iiif.painting_page(book, page)},
+                        media_type="application/ld+json")
+
+
+@app.get("/iiif/{book}/canvas/{page}/page/image")
+def iiif_canvas_painting_anno(book: str, page: int):
+    """The single painting Annotation inside the page above, addressed on its own."""
+    if not _page_exists(book, page):
+        raise HTTPException(404, "page not found")
+    anno = iiif.painting_page(book, page)["items"][0]
+    return JSONResponse({"@context": "http://iiif.io/api/presentation/3/context.json", **anno},
+                        media_type="application/ld+json")
 
 
 def _content_search(q: str, book: Optional[str]):
@@ -831,11 +885,17 @@ def api_export(book: str, format: str = Query("alto")):
 
 # ---------------------------------------------------------------- addressable HTML
 @app.get("/book/{book}")
-def html_book(book: str):
+def html_book(book: str, page: Optional[int] = None, start: int = Query(0, alias="from", ge=0)):
     pgs = book_pages(book)
     if not pgs:
         raise HTTPException(404, "unknown book")
-    return HTMLResponse(render.book_page(book, pgs, catalog, provenance, BASE_URL, IMG_BASE))
+    # The "go to page" box on the volume page submits here; Sirāj al-akhbār alone is 1,787
+    # pages, and a reader who knows the page they want should not have to click through to it.
+    if page is not None:
+        target = min(pgs, key=lambda p: abs(p - page))
+        return RedirectResponse(f"/book/{book}/{target}", status_code=302)
+    return HTMLResponse(render.book_page(book, pgs, catalog, provenance, BASE_URL, IMG_BASE,
+                                         start=start))
 
 
 @app.get("/book/{book}/{page}")
@@ -855,7 +915,8 @@ def html_page(book: str, page: int):
 
 
 def _slug(s: str) -> str:
-    return re.sub(r"[^a-z0-9]+", "-", s.lower()).strip("-")
+    # One rule for the whole site: links on /browse, this router and the sitemap must agree.
+    return catalog.slug(s)
 
 
 def _facet_view(decade=None, subject=None):
@@ -886,10 +947,10 @@ def html_browse(decade: Optional[int] = None, subject: Optional[str] = None):
 @app.get("/browse/periodicals")
 def html_browse_periodicals():
     f = _facet_view()
-    keep = {t["book"] for t in f["periodicals"]}
-    f = dict(f, titles=[t for t in f["titles"] if t["book"] in keep])
+    f = dict(f, titles=f["periodicals"], decades=[], subjects=[])
     return HTMLResponse(render.browse_page(f, BASE_URL, heading="Newspapers and periodicals",
-                                           crumb="Newspapers and periodicals"))
+                                           crumb="Newspapers and periodicals",
+                                           path="/browse/periodicals"))
 
 
 @app.get("/browse/decade/{decade}")
@@ -898,16 +959,30 @@ def html_browse_decade(decade: int):
     if not f["titles"]:
         raise HTTPException(404, f"no volumes published in the {decade}s")
     return HTMLResponse(render.browse_page(f, BASE_URL, heading=f"Published in the {decade}s",
-                                           crumb=f"{decade}s"))
+                                           crumb=f"{decade}s",
+                                           path=f"/browse/decade/{decade}"))
 
 
 @app.get("/browse/subject/{subject}")
 def html_browse_subject(subject: str):
+    if _slug(subject) != subject:
+        return RedirectResponse(f"/browse/subject/{_slug(subject)}", status_code=301)
     f = _facet_view(subject=subject)
     if not f["titles"]:
+        # Subject URLs minted before accents were folded ("afgh-n-jam-l-al-d-n") are already
+        # indexed; send them to the new form instead of 404ing them.
+        old = lambda h: re.sub(r"[^a-z0-9]+", "-", h.lower()).strip("-")
+        # Every raw heading, not the merged facet list: merging punctuation variants kept one
+        # spelling, and the URL may have been minted from the other.
+        for bid in catalog.catalog():
+            for s in catalog.subjects(bid):
+                head = s.split("--")[0].strip()
+                if old(head) == subject:
+                    return RedirectResponse(f"/browse/subject/{_slug(head)}", status_code=301)
         raise HTTPException(404, "no volumes under that subject")
     name = next((s["subject"] for s in f["subjects"] if _slug(s["subject"]) == subject), subject)
-    return HTMLResponse(render.browse_page(f, BASE_URL, heading=name, crumb=name))
+    return HTMLResponse(render.browse_page(f, BASE_URL, heading=name, crumb=name,
+                                           path=f"/browse/subject/{_slug(subject)}"))
 
 
 @app.get("/places")
@@ -1048,7 +1123,7 @@ def sitemap_books():
         urls += f"<url><loc>{BASE_URL}/browse/subject/{_slug(s['subject'])}</loc></url>"
     for p in entities()["places"]:
         urls += f"<url><loc>{BASE_URL}/places/{p['id']}</loc></url>"
-    for extra in ("/browse", "/places", "/about.html"):
+    for extra in ("/", "/browse", "/browse/periodicals", "/places", "/about.html", "/history.html"):
         urls += f"<url><loc>{BASE_URL}{extra}</loc></url>"
     return Response('<?xml version="1.0" encoding="UTF-8"?>'
                     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
@@ -1097,7 +1172,7 @@ def _og_block(html: str, page_url: str) -> str:
     d = re.search(r'<meta name="description" content="([^"]*)"', html)
     c = re.search(r'<link rel="canonical" href="([^"]*)"', html)
     title = t.group(1).strip() if t else "Afghan Press Archive"
-    desc = d.group(1) if d else ("Full-text search across Afghan periodicals, 1873 to the 1960s, "
+    desc = d.group(1) if d else ("Full-text search across Afghan newspapers, journals and books, 1873 to the 1960s, "
                                  "with machine-read transcription and page images.")
     url = c.group(1) if c else page_url
     return (f'<meta property="og:type" content="website">'
@@ -1117,7 +1192,9 @@ def _og_block(html: str, page_url: str) -> str:
 async def inject_og(request, call_next):
     from starlette.responses import Response
     r = await call_next(request)
-    if r.status_code != 200 or not r.headers.get("content-type", "").startswith("text/html"):
+    # A HEAD reply has no body to inject into; rebuilding it from b"" reported Content-Length 0.
+    if (request.method != "GET" or r.status_code != 200
+            or not r.headers.get("content-type", "").startswith("text/html")):
         return r
     body = b"".join([chunk async for chunk in r.body_iterator])
     html = body.decode("utf-8", "replace")
@@ -1134,3 +1211,17 @@ app.add_middleware(GZipMiddleware, minimum_size=500)
 
 app.mount("/", StaticFiles(directory=os.path.join(os.path.dirname(__file__), "static"),
                            html=True), name="static")
+
+# Starlette's Route adds HEAD wherever GET is declared; FastAPI's APIRoute does not, so every
+# route here answered GET with a 200 and HEAD with a 404. Googlebot uses GET and never noticed,
+# but link checkers, Bing and the IndexNow validator lead with HEAD and saw a dead site.
+# Registered in one pass after the last route rather than as a flag on forty decorators.
+# The handler runs unchanged and the server drops the body, so the reply carries the same
+# headers and Content-Length a GET would return, which is what a HEAD is for.
+# Not on the streaming downloads: the handler runs in full for a HEAD, so a link checker's HEAD
+# on /api/download/corpus.jsonl would scan and encode all 69,624 pages to send nothing.
+_NO_HEAD = ("/api/download/", "/api/contrib/export", "/api/export/")
+for _route in app.routes:
+    if (isinstance(_route, APIRoute) and "GET" in _route.methods
+            and not _route.path.startswith(_NO_HEAD)):
+        _route.methods = set(_route.methods) | {"HEAD"}

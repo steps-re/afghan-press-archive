@@ -31,6 +31,26 @@ def canvas_id(book: str, page: int) -> str:
     return f"{BASE}/iiif/{book}/canvas/{page}"
 
 
+def painting_page(book: str, page: int) -> dict:
+    """The painting AnnotationPage for one canvas: the annotation that puts the scan on it.
+
+    This is embedded in the manifest, and the spec does not require an embedded resource's id to
+    resolve. Real clients dereference it anyway -- the Cloud Run log for 2026-08-19 is full of
+    404s on `/canvas/{n}/page` and `/canvas/{n}/page/image` from IIIF viewers -- so it is built
+    here once and served from both places. Same lesson as the dangling `/text` and ALTO
+    `seeAlso` URIs fixed on 2026-08-18: dereference every URL a manifest advertises."""
+    cid = canvas_id(book, page)
+    return {
+        "id": f"{cid}/page", "type": "AnnotationPage",
+        "items": [{
+            "id": f"{cid}/page/image", "type": "Annotation", "motivation": "painting",
+            "body": {"id": _img(book, page), "type": "Image", "format": "image/jpeg",
+                     "height": PAGE_H, "width": PAGE_W},
+            "target": cid,
+        }],
+    }
+
+
 def _lang_label(cat) -> dict:
     """IIIF labels are language maps. Giving the Persian title a `fa` key rather than dumping
     both scripts into one string is what lets a viewer pick the right font and direction."""
@@ -106,15 +126,7 @@ def manifest(book: str, pages: list, cat_mod, prov_mod) -> dict:
         items.append({
             "id": cid, "type": "Canvas", "height": PAGE_H, "width": PAGE_W,
             "label": {"none": [str(p)]},
-            "items": [{
-                "id": f"{cid}/page", "type": "AnnotationPage",
-                "items": [{
-                    "id": f"{cid}/page/image", "type": "Annotation", "motivation": "painting",
-                    "body": {"id": _img(book, p), "type": "Image", "format": "image/jpeg",
-                             "height": PAGE_H, "width": PAGE_W},
-                    "target": cid,
-                }],
-            }],
+            "items": [painting_page(book, p)],
             # The transcription rides along as a supplementing annotation page, which is how a
             # viewer offers "show transcript" without treating our text as the image itself.
             "annotations": [{

@@ -143,6 +143,45 @@ def dublin_core(bid: str, pages: int = 0) -> dict:
     }
 
 
+def slug(s: str) -> str:
+    """URL form of a heading. Accents are folded first: the old ASCII-only rule turned
+    "Afghānī, Jamāl al-Dīn" into "afgh-n-jam-l-al-d-n"."""
+    import unicodedata
+    s = "".join(c for c in unicodedata.normalize("NFKD", s) if not unicodedata.combining(c))
+    return re.sub(r"[^a-z0-9]+", "-", s.lower()).strip("-")
+
+
+def _fold(s: str) -> str:
+    """Romanised titles carry ā, ʻ, ẓ and hyphens; a reader types "Siraj al-Akhbar". Fold both
+    to bare letters so they meet."""
+    import unicodedata
+    s = unicodedata.normalize("NFKD", s or "")
+    return re.sub(r"[^a-z0-9\u0600-\u06ff]", "", "".join(
+        c for c in s if not unicodedata.combining(c)).lower().replace("ي", "ی").replace("ك", "ک"))
+
+
+def match_titles(q: str, limit: int = 5) -> list:
+    """Volumes whose title matches the query, so typing a paper's name finds the paper and not
+    only pages that mention it. Periodicals first: a name search is usually for a source."""
+    fq = _fold(q)
+    if len(fq) < 4:
+        return []
+    hits = []
+    for bid, rec in catalog().items():
+        names = [rec.get("title_romanized"), rec.get("title_original"), rec.get("title")]
+        names += rec.get("other_titles") or []
+        folded = [_fold(n) for n in names if n]
+        # From the START of a title only: as a bare substring "anis" matched "Afghanistan" in
+        # half the catalogue. A query that runs on past the title ("Siraj al-Akhbar 1913") still
+        # finds it via the second test.
+        if any(f.startswith(fq) or (len(f) >= 4 and fq.startswith(f)) for f in folded):
+            hits.append(bid)
+    hits.sort(key=lambda b: (not is_periodical(b), (title_parts(b)["romanized"] or b).lower()))
+    return [{"book": b, "title": title_parts(b)["romanized"] or label(b),
+             "original": title_parts(b)["original"], "periodical": is_periodical(b)}
+            for b in hits[:limit]]
+
+
 def is_periodical(bid: str) -> bool:
     return any(re.search(r"--\s*(Periodicals|Newspapers)\s*$", s) for s in subjects(bid))
 
@@ -160,10 +199,15 @@ def facets(counts: dict) -> dict:
             e = decades.setdefault(d, {"decade": d, "books": 0, "pages": 0})
             e["books"] += 1
             e["pages"] += n
+        seen = set()
         for s in subjects(bid):
             head = s.split("--")[0].strip()          # LCSH heading, not the full subdivision
-            if head:
-                e = subj.setdefault(head, {"subject": head, "books": 0, "pages": 0})
+            key = slug(head)
+            # "Amir of Afghanistan ʻAbd…" and "Amir of Afghanistan; ʻAbd…" are one heading
+            # punctuated two ways; keyed by text they were listed twice and sat in the sitemap twice.
+            if key and key not in seen:
+                seen.add(key)
+                e = subj.setdefault(key, {"subject": head, "books": 0, "pages": 0})
                 e["books"] += 1
                 e["pages"] += n
         parts = title_parts(bid)
@@ -175,7 +219,7 @@ def facets(counts: dict) -> dict:
     # the newspapers were buried among 580 alphabetised books. Which volumes are serials comes
     # from NYU's own LCSH form subdivision, not from guessing at titles.
     periodicals = sorted((t for t in by_title if is_periodical(t["book"])),
-                         key=lambda r: (r["year_start"] or 9999, r["romanized"].lower()))
+                         key=lambda r: (r["year_start"] or 9999, (r["romanized"] or r["book"]).lower()))
     return {
         "periodicals": periodicals,
         "decades": sorted(decades.values(), key=lambda r: r["decade"]),

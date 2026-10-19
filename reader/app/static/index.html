@@ -3,8 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Afghan Press Archive — search 580 volumes of Afghan periodicals, 1873–1960s</title>
-<meta name="description" content="Full-text search across 69,624 pages of Afghan periodicals and books digitised by New York University. Machine-read transcription with page images.">
+<title>Afghan Press Archive — search 580 volumes of Afghan newspapers, journals and books, 1873–1960s</title>
+<meta name="description" content="Full-text search across 69,624 pages of Afghan newspapers, journals and books digitised by New York University. Machine-read transcription with page images.">
+<link rel="canonical" href="https://afghanpress.org/">
 <style>
 /* Amiri: a revival of the Bulaq/Amiria naskh — the type tradition these presses worked in.
    Self-hosted: a research site should make no third-party request to render its own text. */
@@ -88,6 +89,8 @@ input[type=radio]{accent-color:var(--lapis);margin-right:5px}
 #results{margin-top:28px}
 .count{font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--lapis);
   padding-bottom:10px;border-bottom:2px solid var(--lapis);font-weight:700}
+.sources{padding:12px 0 14px;border-bottom:1px solid var(--rule,#d8cfb8);font-size:15px}
+.sources .ar{font-size:18px}
 .hit{display:grid;grid-template-columns:104px 1fr;gap:24px;padding:22px 0;
   border-bottom:1px solid var(--rule);cursor:pointer;align-items:start}
 .hit:hover{background:var(--sel)}
@@ -214,6 +217,7 @@ html[dir=rtl] .col.plate{order:0;border-left:0;border-right:1px solid var(--rule
       <span id="who"></span>
       <button id="signin" data-i18n="signin" style="border:0;background:transparent;color:var(--soft);font:inherit;font-size:13px;cursor:pointer;text-decoration:underline">Sign in</button>
     </div>
+    <p class="note" id="scope" hidden></p>
     <p class="note">
       Letter forms are folded — <span class="ar">ی/ي</span>, <span class="ar">ک/ك</span>,
       tatweel, vowel marks, digits — on both the text and your query, and the index works on
@@ -434,12 +438,30 @@ $('#signin').onclick=async()=>{
   alert('A sign-in link is on its way.');
 };
 
+// ?book= scopes search to one volume (linked from every volume page); ?q= runs a search;
+// ?book=&page= opens that page. Before this the reader's "Open in the search interface" link
+// carried book and page but nothing read them, so it landed on a blank front page.
+const QS=new URLSearchParams(location.search);
+let SCOPE=/^adl\d+$/.test(QS.get('book')||'')?QS.get('book'):null;
+const PLINK=/^(adl\d+)\/(\d+)$/.exec(QS.get('p')||'');
+async function showScope(){
+  const el=$('#scope'); if(!SCOPE){el.hidden=true;return;}
+  let t=SCOPE;
+  try{const d=await (await fetch(`/api/page/${SCOPE}/1`)).json(); t=d.title||SCOPE;}catch(e){}
+  el.hidden=false;
+  el.innerHTML=(LANG==='fa'?'جستجو فقط در ':'Searching only in ')+'<strong>'+esc(t)+'</strong> · '+
+    '<a href="/" id="unscope">'+(LANG==='fa'?'جستجو در همه':'search everything')+'</a>';
+  $('#unscope').onclick=e=>{e.preventDefault();SCOPE=null;history.replaceState({},'','/');showScope();
+    if($('#q').value.trim())search();};
+}
 async function search(){
   const q=$('#q').value.trim(); if(q.length<2) return;
+  const u=new URLSearchParams({q}); if(SCOPE) u.set('book',SCOPE);
+  history.replaceState({},'','/?'+u.toString());
   const mode=document.querySelector('input[name=mode]:checked').value;
   const fi=document.querySelector('.firstissue'); if(fi) fi.style.display='none';
   $('#results').innerHTML='<div class="count">'+(LANG==='fa'?FA.searching:'searching…')+'</div>';
-  const r=await (await fetch(`/api/search?q=${encodeURIComponent(q)}&mode=${mode}&limit=25`)).json();
+  const r=await (await fetch(`/api/search?q=${encodeURIComponent(q)}&mode=${mode}&limit=25${SCOPE?'&book='+SCOPE:''}`)).json();
   if(!r.results.length){
     $('#results').innerHTML='<div class="count">nothing found</div>'+
       '<p class="note">Try a longer stretch of text. Short queries miss the right page about a third of the time.</p>';
@@ -447,11 +469,13 @@ async function search(){
     return;
   }
   $('#srstatus').textContent=`${r.results.length} pages found.`;
-  $('#results').innerHTML=
+  const src=(r.sources||[]).length?'<div class="sources">'+(LANG==='fa'?'عنوان‌های هم‌نام: ':'Titles matching your search: ')+
+    r.sources.map(s=>`<a href="/book/${s.book}">${esc(s.title)}</a>${s.original?' <span class="ar">'+esc(s.original)+'</span>':''}${s.periodical?(LANG==='fa'?' (نشریه)':' (newspaper or journal)'):''}`).join(' · ')+'</div>':'';
+  $('#results').innerHTML=src+
     `<div class="count">${LANG==='fa'?faDigits(r.results.length)+' '+FA.results+' · '+faDigits(r.ms)+' '+FA.ms:r.results.length+' pages · '+r.ms+' ms'}${r.semantic_available?'':(LANG==='fa'?'':' · subject search unavailable')}</div>`+
     r.results.map(x=>`<div class="hit" data-b="${x.book}" data-p="${x.page}">
-      <img loading="lazy" src="${x.image}" alt="Scanned page ${x.page} of ${x.book}">
-      <div><div class="ref">${x.book} · page ${x.page}</div>
+      <img loading="lazy" src="${x.image}" alt="Scanned page ${x.page} of ${esc(x.title||x.book)}">
+      <div><div class="ref">${esc(x.title||x.book)} · ${LANG==='fa'?'صفحه '+faDigits(x.page):'page '+x.page}</div>
       <div class="ar">${esc(x.snippet)}</div></div></div>`).join('');
   document.querySelectorAll('.hit').forEach(el=>
     el.onclick=()=>openPage(el.dataset.b,+el.dataset.p));
@@ -524,6 +548,11 @@ async function send(kind,el,msg){
 }
 $('#csend').onclick=()=>send('correction',$('#cbody'),$('#cmsg'));
 $('#asend').onclick=()=>send('annotation',$('#abody'),$('#amsg'));
+// Deep links last: openPage reads `cur`, which is declared above and is in its TDZ until then.
+showScope();
+if(QS.get('q')){ $('#q').value=QS.get('q'); search(); }
+else if(SCOPE && /^\d+$/.test(QS.get('page')||'')) openPage(SCOPE, +QS.get('page'));
+else if(PLINK) openPage(PLINK[1], +PLINK[2]);
 </script>
 </body>
 </html>

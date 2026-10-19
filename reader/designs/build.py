@@ -268,6 +268,7 @@ PAGE = """<!doctype html><html lang="en"><head><meta charset="utf-8">
 .hint{{font-size:13px;opacity:.7}}
 .hit{{cursor:pointer}}
 body{{padding-top:34px}}
+@media(max-width:760px){{.bar{{position:static;flex-wrap:wrap;line-height:1.5}}body{{padding-top:0}}}}
 html[dir=rtl] .hit{{direction:rtl}}
 html[dir=rtl] .cols{{direction:rtl}}
 </style></head><body>

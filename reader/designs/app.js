@@ -105,7 +105,7 @@ async function runSearch(q) {
   box.innerHTML = `<div class="count">${n} ${t("pages")} · ${isFA() ? faD(r.ms) : r.ms} ms</div>` +
     r.results.map(x => `<div class="hit" data-b="${x.book}" data-p="${x.page}">
       <img loading="lazy" src="${x.image}" alt="">
-      <div><span class="ref">${x.book} · ${isFA() ? faD(x.page) : x.page}</span>
+      <div><span class="ref">${esc(x.title || x.book)} · ${isFA() ? faD(x.page) : x.page}</span>
       <div class="txt">${esc(x.snippet)}</div></div></div>`).join("");
   box.querySelectorAll(".hit").forEach(el =>
     el.onclick = () => openPage(el.dataset.b, +el.dataset.p));

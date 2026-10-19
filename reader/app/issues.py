@@ -18,12 +18,22 @@ HIJRI_MONTHS = ["Muḥarram", "Ṣafar", "Rabīʿ I", "Rabīʿ II", "Jumādá I"
                 "Shaʿbān", "Ramaḍān", "Shawwāl", "Dhū al-Qaʿdah", "Dhū al-Ḥijjah"]
 
 
+# The volumes that have an index, fixed at import. `book` arrives from the URL, so it is checked
+# against this set before any path is built or anything is cached: a lookup keyed by request
+# input would otherwise grow without bound and could address files outside HERE.
+try:
+    INDEXED = frozenset(f[:-5] for f in os.listdir(HERE) if f.endswith(".json"))
+except OSError:
+    INDEXED = frozenset()
+
+
 def for_book(book: str) -> Optional[dict]:
+    if book not in INDEXED:
+        return None
     with _lock:
         if book not in _cache:
-            p = os.path.join(HERE, f"{book}.json")
             try:
-                _cache[book] = json.load(open(p, encoding="utf-8"))
+                _cache[book] = json.load(open(os.path.join(HERE, f"{book}.json"), encoding="utf-8"))
             except (OSError, ValueError):
                 _cache[book] = None
     return _cache[book]

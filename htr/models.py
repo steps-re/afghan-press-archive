@@ -35,8 +35,8 @@ def _gemini_url(model, location):
         loc = model.split("/locations/")[1].split("/")[0]
         host = "aiplatform.googleapis.com" if loc == "global" else f"{loc}-aiplatform.googleapis.com"
         return f"https://{host}/v1/{model}:generateContent", loc
-    # Gemini 3.x is served ONLY on the global endpoint; 2.5.x can use any region.
-    if model.startswith("gemini-3"):
+    # Gemini 3.x and 4.x are served ONLY on the global endpoint; 2.5.x can use any region.
+    if model.startswith(("gemini-3", "gemini-4")):
         location = "global"
     host = "aiplatform.googleapis.com" if location == "global" else f"{location}-aiplatform.googleapis.com"
     return (f"https://{host}/v1/projects/{GEMINI_PROJECT}/locations/{location}"
@@ -122,6 +122,7 @@ BACKENDS = {
     "gemini-2.5-pro":        ("gemini", "gemini-2.5-pro"),
     "gemini-3.7-flash":      ("gemini", "gemini-3.7-flash"),
     "gemini-3.1-pro":        ("gemini", "gemini-3.1-pro-preview"),
+    "gemini-4-argon":        ("gemini", "gemini-4-argon"),   # current top Gemini; default for layout/demo
     "gemini-3.7-flash":      ("gemini", "gemini-3.7-flash"),
     "gpt-5.6-sol":           ("openai", "gpt-5.6-sol"),
     "gpt-5.6-terra":         ("openai", "gpt-5.6-terra"),

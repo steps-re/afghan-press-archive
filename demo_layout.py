@@ -27,10 +27,10 @@ def main():
         print(f"\n=== {book} p{page} — {desc} ===", flush=True)
         pdf = pages.adl_pdf(book, WORK)
         pil, b64 = pages.render(pdf, page)
-        lf, ptype, nreg = layout.transcribe_layout(pil, b64, "gemini-2.5-pro", "gemini-2.5-pro")
+        lf, ptype, nreg = layout.transcribe_layout(pil, b64, "gemini-4-argon", "gemini-4-argon")
         # when layout routed to whole-page, reuse that read as the whole-page baseline so the
         # comparison reflects the LAYOUT decision, not two independent nondeterministic samples
-        wp = lf if ptype != "independent_prose" else (layout.whole_page(b64, "gemini-2.5-pro") or "")
+        wp = lf if ptype != "independent_prose" else (layout.whole_page(b64, "gemini-4-argon") or "")
         rec = {"book": book, "page": page, "page_type": ptype, "regions": nreg,
                "whole_page": metrics.line_stats(wp),
                "layout_first": metrics.line_stats(lf),

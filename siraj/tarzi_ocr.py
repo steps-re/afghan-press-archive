@@ -17,7 +17,7 @@ PDF      = os.path.expanduser("~/tarzi/maqalat_tarzi.pdf")
 OUTDIR   = os.path.expanduser("~/tarzi_out")
 OUT      = os.path.join(OUTDIR, "tarzi_pages.jsonl")
 GCS = os.environ.get("HTR_BUCKET", "").rstrip("/") + "/tarzi/"
-MODEL    = os.environ.get("TARZI_MODEL", "gemini-2.5-pro")
+MODEL    = os.environ.get("TARZI_MODEL", "gemini-4-argon")
 PROJECT = os.environ.get("HTR_PROJECT", "")
 DPI      = int(os.environ.get("TARZI_DPI", "300"))
 WORKERS  = int(os.environ.get("TARZI_WORKERS", "8"))
@@ -48,9 +48,9 @@ def token():
         _tok["e"] = time.time() + 1500
         return _tok["v"]
 
-def gemini(img_b64, retries=4, max_tokens=8192):
-    url = (f"https://us-central1-aiplatform.googleapis.com/v1/projects/{PROJECT}"
-           f"/locations/us-central1/publishers/google/models/{MODEL}:generateContent")
+def gemini(img_b64, retries=4, max_tokens=16384):
+    url = (f"https://aiplatform.googleapis.com/v1/projects/{PROJECT}"
+           f"/locations/global/publishers/google/models/{MODEL}:generateContent")
     body = {"contents": [{"role": "user", "parts": [
                 {"inlineData": {"mimeType": "image/jpeg", "data": img_b64}},
                 {"text": RULES}]}],

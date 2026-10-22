@@ -39,10 +39,10 @@ PROMPT_READ = ("Transcribe this text region faithfully. Preserve original spelli
                "If the region is blank or a plate with no text, output exactly [BLANK PAGE]. "
                "Output ONLY the transcription, no commentary.")
 
-def analyze(image_b64, backend="gemini-2.5-pro"):
+def analyze(image_b64, backend="gemini-4-argon"):
     """Return (columns_are, regions). columns_are drives whether we crop or read whole-page:
     'independent_prose' -> crop; 'paired_verse'/'none' -> whole-page (cropping would scramble)."""
-    out = models.transcribe(backend, SYS_LAYOUT, PROMPT_LAYOUT, image_b64, max_tokens=4096) or ""
+    out = models.transcribe(backend, SYS_LAYOUT, PROMPT_LAYOUT, image_b64, max_tokens=8192) or ""
     m = re.search(r"\{.*\}", out, re.S)
     if not m:
         return "none", []
@@ -53,7 +53,7 @@ def analyze(image_b64, backend="gemini-2.5-pro"):
     regs = [r for r in d.get("regions", []) if isinstance(r.get("box"), list) and len(r["box"]) == 4]
     return d.get("columns_are", "none"), sorted(regs, key=lambda r: r.get("order", 999))[:20]
 
-def analyze_stable(image_b64, backend="gemini-2.5-pro", n=3):
+def analyze_stable(image_b64, backend="gemini-4-argon", n=3):
     """Wobble-resistant layout via the VLM. Measured finding (2026-07): off-the-shelf layout
     CNNs do NOT transfer to historical Perso-Arabic — DocLayout-YOLO reads a 1920s nastaliq
     newspaper as a 'figure', and Surya's current build has a llama.cpp grammar mismatch. The
@@ -81,8 +81,8 @@ def _crop_b64(pil, box, pad=0.015):
     buf = io.BytesIO(); crop.convert("L").save(buf, "JPEG", quality=90)
     return base64.b64encode(buf.getvalue()).decode()
 
-def transcribe_layout(pil, image_b64, read_backend="gemini-2.5-pro",
-                      layout_backend="gemini-2.5-pro", region_source="vlm", stable=True):
+def transcribe_layout(pil, image_b64, read_backend="gemini-4-argon",
+                      layout_backend="gemini-4-argon", region_source="vlm", stable=True):
     """Region-type-aware layout-first pass. Returns (text, columns_are, n_regions).
     Crops regions ONLY when the columns are INDEPENDENT PROSE; paired-verse and single-block
     pages are read whole-page (cropping paired verse scrambles couplets — measured on Bustan
@@ -111,5 +111,5 @@ def transcribe_layout(pil, image_b64, read_backend="gemini-2.5-pro",
             parts.append(txt.strip())
     return "\n\n".join(parts), columns_are, len(regs)
 
-def whole_page(image_b64, backend="gemini-2.5-pro"):
+def whole_page(image_b64, backend="gemini-4-argon"):
     return models.transcribe(backend, SYS_READ, PROMPT_READ, image_b64, max_tokens=16384)
